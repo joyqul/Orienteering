@@ -47,3 +47,7 @@ Client --> Server
 ---
 1. {"jsonType": 3}
 2. {"msg": string (content)}
+
+Server --> Client
+---
+1. {"success": [true, false]}
