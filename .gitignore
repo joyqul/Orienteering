@@ -1,9 +1,4 @@
-Orienteering/\.gradle/2\.2\.1/taskArtifacts/*
-Orienteering/.gradle/2.2.1/taskArtifacts/cache.properties.lock
-Orienteering/.gradle/2.2.1/taskArtifacts/fileHashes.bin
-Orienteering/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin
-Orienteering/.gradle/2.2.1/taskArtifacts/outputFileStates.bin
-Orienteering/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin
+Orienteering/.gradle/2.2.1/taskArtifacts/*
 Orienteering/.idea/gradle.xml
 Orienteering/.idea/libraries/support_v4_19_1_0.xml
 Orienteering/.idea/workspace.xml
@@ -12,7 +7,7 @@ Orienteering/app/build/intermediates/incremental/mergeAssets/androidTest/debug/m
 Orienteering/app/build/intermediates/incremental/mergeAssets/debug/merger.xml
 Orienteering/app/build/intermediates/incremental/mergeResources/androidTest/debug/merger.xml
 Orienteering/app/build/intermediates/incremental/mergeResources/debug/merger.xml
-Orienteering/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-864efc004f649da7a577c1576517098bc4cbee79.jar           
+Orienteering/app/build/intermediates/pre-dexed/debug/support*
 Orienteering/app/build/intermediates/res/debug/drawable/shape.xml
 Orienteering/app/build/intermediates/res/debug/drawable/shape_dialogue.xml
 Orienteering/app/build/intermediates/res/debug/layout/activity_choose_mode.xml
