@@ -1,0 +1,48 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+    android:layout_centerVertical="true"
+
+    android:background="#ff33a2ff"
+    android:weightSum="1">
+
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
+        android:text="Type your name:"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <EditText
+        android:id="@+id/edit_text"
+        android:icon="@drawable/p1"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
+        android:height="40dp"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/shape"
+        />
+    <Button
+        android:id="@+id/button_submit"
+        android:text=" SUBMIT "
+        android:width="200dp"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff2641ff"
+        android:background="@drawable/shape"
+        />
+
+
+
+</LinearLayout>
