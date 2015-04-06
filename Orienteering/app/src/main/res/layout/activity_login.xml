@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:textColor="#ff2641ff"
         android:background="@drawable/shape"
+        android:onClick="submit"
         />
 
 

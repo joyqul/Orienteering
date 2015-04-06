@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 
-import orienteering.album.R;
+import org.json.JSONObject;
 
 public class LoginActivity extends Activity {
 
@@ -15,6 +19,11 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
     }
 
+    public void submit(View view){
+        EditText text = (EditText) findViewById(R.id.edit_text);
+        String name = text.getText().toString();
+        JSONObject msg = new JSONObject();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -22,6 +31,7 @@ public class LoginActivity extends Activity {
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
