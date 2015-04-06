@@ -1,44 +1,44 @@
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:layout_centerVertical="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_centerVertical="true"
 
-android:background="#ff33a2ff"
-android:weightSum="1">
-<TextView
-    android:id="@+id/text_continue"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/imageView1"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="100dp"
-    android:text="Do you want to continue?"
-    android:textColor="@android:color/white"
-    android:textAppearance="?android:attr/textAppearanceLarge" />
-<Button
-    android:id="@+id/btn_continue"
-    android:text="Continue "
-    android:width="200dp"
-    android:layout_marginTop="20sp"
-    android:layout_gravity="center_horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="#ff2641ff"
-    android:background="@drawable/shape"
-    />
-<Button
-    android:id="@+id/btn_new_game"
-    android:text="New Game"
-    android:width="200dp"
-    android:layout_marginTop="20sp"
-    android:textColor="#ff2641ff"
-    android:layout_gravity="center_horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/shape"
+    android:background="#ff33a2ff"
+    android:weightSum="1">
+    <TextView
+        android:id="@+id/text_continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:text="Do you want to continue?"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <Button
+        android:id="@+id/btn_continue"
+        android:text="Continue "
+        android:width="200dp"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff2641ff"
+        android:background="@drawable/shape"
+        />
+    <Button
+        android:id="@+id/btn_new_game"
+        android:text="New Game"
+        android:width="200dp"
+        android:layout_marginTop="20sp"
+        android:textColor="#ff2641ff"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
 
-    />
+        />
 
 </LinearLayout>

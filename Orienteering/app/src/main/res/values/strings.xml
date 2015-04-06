@@ -4,5 +4,11 @@
     <string name="app_name">Orienteering</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_choose_mode">ChooseMode</string>
+    <string name="title_activity_gg">GG</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_my_hint">MyHintActivity</string>
+    <string name="title_activity_save_load">SaveLoadActivity</string>
+    <string name="title_activity_start">StartActivity</string>
 
 </resources>
