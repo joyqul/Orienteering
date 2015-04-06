@@ -1060,7 +1060,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4284935954000" />
+        <entry key="$PROJECT_DIR$" value="4284941425000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1227,6 +1227,7 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$USER_HOME$/Android/Sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar" />
+                            <option value="$MODULE_DIR$/java-json.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/app" />

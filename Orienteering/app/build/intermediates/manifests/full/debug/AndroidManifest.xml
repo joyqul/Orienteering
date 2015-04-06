@@ -10,6 +10,11 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/l1"
@@ -25,6 +30,30 @@
             </intent-filter>
         </activity>
         <activity android:name="orienteering.album.GridActivity" />
+        <activity
+            android:name="lincyu.chapter8_album2.ChooseMode"
+            android:label="@string/title_activity_choose_mode" >
+        </activity>
+        <activity
+            android:name="lincyu.chapter8_album2.GG"
+            android:label="@string/title_activity_gg" >
+        </activity>
+        <activity
+            android:name="orienteering.album.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="orienteering.album.MyHintActivity"
+            android:label="@string/title_activity_my_hint" >
+        </activity>
+        <activity
+            android:name="orienteering.album.SaveLoadActivity"
+            android:label="@string/title_activity_save_load" >
+        </activity>
+        <activity
+            android:name="orienteering.album.StartActivity"
+            android:label="@string/title_activity_start" >
+        </activity>
     </application>
 
 </manifest>
