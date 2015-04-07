@@ -10,8 +10,7 @@ import Queue
 PACKET_SIZE = 1024
 
 class Client:
-    def __init__(self, address):
-        self.address = address
+    def __init__(self):
         self.name = ""
 
     def set_name(self, name):
@@ -28,22 +27,36 @@ class Server:
             json_data = json.loads(data)
         except ValueError, e:
             print >>sys.stderr, e
-            return 'ERROR\n'
+            return 'ERROR'
         except TypeError, e:
             print >>sys.stderr, e
-            return 'ERROR\n'
+            return 'ERROR'
 
         try:
             json_type = json_data['jsonType']
         except ValueError, e:
             print >>sys.stderr, e
-            return 'ERROR\n'
+            return 'ERROR'
         except TypeError, e:
             print >>sys.stderr, e
-            return 'ERROR\n'
+            return 'ERROR'
 
         if json_type == 0:
-            print >>sys.stderr, 'set name: ', json_data["playerName"]
+            try:
+                name = json_data["playerName"]
+            except ValueError, e:
+                print >>sys.stderr, e, 'no name obj'
+                return 'ERROR'
+            else:
+                response = {}
+                if self.set_client_name(name, my_socket):
+                    print >>sys.stderr, 'set name: ', name
+                    response["success"] = "true"
+                else:
+                    response["success"] = "false"
+                response = json.dumps(response)
+                return response
+                
         elif json_type == 1:
             print >>sys.stderr, 'retrun hints'
         elif json_type == 2:
@@ -53,8 +66,14 @@ class Server:
         else:
             print >>sys.stderr, 'none of above'
             
-        return "test\n"
+        return "test"
         
+    def set_client_name(self, name, my_socket):
+        for client in self.client:
+            if name == self.client[client].name:
+                return False
+        self.client[my_socket].set_name(name)
+        return True
 
     def listen(self):
         # Create a TCP/IP socket
@@ -86,7 +105,7 @@ class Server:
                     # A "readable" server socket is ready to accept a connection
                     connection, client_address = s.accept()
                     print >>sys.stderr, 'new connection from', client_address
-                    new_client = Client(client_address)
+                    new_client = Client()
                     self.client[connection] = new_client
                     connection.setblocking(0)
                     inputs.append(connection)
