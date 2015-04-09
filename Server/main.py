@@ -116,11 +116,32 @@ class Server:
                         h.sent.append(my_socket)
 
                 response["hintCnt"] = hint_id
+
+                msg_id = 0
+                for m in self.client[my_socket].others_msg:
+                    data = {}
+                    data["lat"] = m.latitude
+                    data["long"] = m.longitude
+                    data["content"] = m.content
+                    msg = "msg"+str(msg_id)
+                    response[msg] = data
+                    msg_id = msg_id + 1
+
+                response["msgCnt"] = msg_id
                         
                 response = json.dumps(response)
                 return response
                 
         elif json_type == 3:
+            content = json_data["msg"]
+            latitude = self.client[my_socket].latitude
+            longitude = self.client[my_socket].longitude
+            message = Message(latitude, longitude, content)
+
+            for c in self.client:
+                if c == my_socket:
+                    continue
+                self.client[c].others_msg.append(message)
             print >>sys.stderr, 'get msg: ', json_data["msg"]
         else:
             print >>sys.stderr, 'none of above'
