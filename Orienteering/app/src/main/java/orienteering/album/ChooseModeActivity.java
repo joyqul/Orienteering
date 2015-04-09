@@ -1,9 +1,11 @@
 package orienteering.album;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class ChooseModeActivity extends Activity {
 
@@ -13,6 +15,10 @@ public class ChooseModeActivity extends Activity {
         setContentView(R.layout.activity_choose_mode);
     }
 
+    public void chosenPlayer(View view){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

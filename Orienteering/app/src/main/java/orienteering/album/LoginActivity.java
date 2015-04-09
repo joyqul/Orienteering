@@ -9,7 +9,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 
-import org.json.JSONObject;
+import org.json.JSONException;
+
+import JSONMsg.*;
 
 public class LoginActivity extends Activity {
 
@@ -22,7 +24,16 @@ public class LoginActivity extends Activity {
     public void submit(View view){
         EditText text = (EditText) findViewById(R.id.edit_text);
         String name = text.getText().toString();
-        JSONObject msg = new JSONObject();
+        try {
+            JSONType0 msg = new JSONType0();
+            msg.put("playerName", name);
+
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Override
