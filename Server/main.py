@@ -9,18 +9,38 @@ import Queue
 
 PACKET_SIZE = 1024
 
+class Message:
+    def __init__(self, latitude, longitude, content):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.content = content
+        self.sent = []
+
 class Client:
     def __init__(self):
         self.name = ""
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.others_msg = []
 
     def set_name(self, name):
         self.name = name
+
+    def set_lat(self, latitude):
+        self.latitude = latitude
+
+    def set_long(self, longitude):
+        self.longitude = longitude
 
 class Server:
     def __init__(self, ip='127.0.0.1', port=10001):
         port = 1024+random.randint(1, 1000)
         self.address = (ip, port)
         self.client = {}
+        self.hints = []
+
+    def near(self, latitude, longitude, hint):
+        return True
 
     def handle_json(self, data, my_socket):
         try:
@@ -60,7 +80,46 @@ class Server:
         elif json_type == 1:
             print >>sys.stderr, 'retrun hints'
         elif json_type == 2:
-            print >>sys.stderr, 'lat: ', json_data["lat"], 'long: ', json_data["long"]
+            try:
+                latitude = json_data["lat"]
+                longitude = json_data["long"]
+            except ValueError, e:
+                print >>sys.stderr, e, 'no lat or long obj'
+                return 'ERROR'
+            else:
+                response = {}
+                self.client[my_socket].set_lat(latitude)
+                self.client[my_socket].set_long(longitude)
+                print >>sys.stderr, 'lat: ', json_data["lat"], 'long: ', json_data["long"]
+
+                player_id = 0
+                for s in self.client:
+                    if s == my_socket:
+                        continue
+                    player = "player"+str(player_id)
+                    player_id = player_id + 1
+                    position = {}
+                    position["lat"] = self.client[s].latitude
+                    position["long"] = self.client[s].longitude
+                    response[player] = position
+                
+                response["playerCnt"] = player_id
+
+                hint_id = 0
+                for h in self.hints:
+                    if my_socket in h.sent:
+                        continue
+                    if self.near(latitude, longitude, h):
+                        hint = "hint"+str(hint_id)
+                        response[hint] = h.content
+                        hint_id = hint_id + 1
+                        h.sent.append(my_socket)
+
+                response["hintCnt"] = hint_id
+                        
+                response = json.dumps(response)
+                return response
+                
         elif json_type == 3:
             print >>sys.stderr, 'get msg: ', json_data["msg"]
         else:
@@ -161,7 +220,13 @@ class Server:
                 # Remove message queue
                 del message_queues[s]
 
+    def set_hint(self, fname):
+        with open(fname) as f:
+            for line in f:
+                latitude, longitude, content = line.split(',')
+                self.hints.append(Message(latitude, longitude, content))
 
 if __name__ == '__main__':
     server = Server()
+    server.set_hint("hints")
     server.listen()
