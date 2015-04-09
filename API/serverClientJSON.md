@@ -1,6 +1,9 @@
 Player name
 ===
 
+- 140.113.27.45
+- 93128
+
 Client --> Server
 ---
 1. {"jsonType": 0}
