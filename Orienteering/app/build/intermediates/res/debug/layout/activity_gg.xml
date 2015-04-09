@@ -11,23 +11,26 @@
 
     <ImageView
         android:id="@+id/img_logo"
-        android:layout_width="match_parent"
-        android:layout_height="322dp"
+        android:layout_width="317dp"
+        android:layout_height="250dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
         android:maxHeight="100dp"
         android:maxWidth="100dp"
-        android:src="@drawable/o2"
+        android:src="@drawable/f1"
         android:layout_marginTop="100px"
         android:layout_centerHorizontal="true"
         />
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="450px"
-        android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:max="100"
+    <Button
+        android:id="@+id/button_submit"
+        android:text=" NEW GAME "
+        android:width="200dp"
+        android:layout_marginTop="20sp"
         android:layout_gravity="center_horizontal"
-        android:indeterminate="false" />
-
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff3771ff"
+        android:background="@drawable/shape"
+        />
+</LinearLayout><!-- From: file:/Users/Shamrock/Desktop/103B/Android/Orienteering/Orienteering/app/src/main/res/layout/activity_gg.xml -->

@@ -1,8 +1,8 @@
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
     android:layout_centerVertical="true"
 
     android:background="#ff33a2ff"
@@ -41,9 +41,8 @@
         android:layout_height="wrap_content"
         android:textColor="#ff2641ff"
         android:background="@drawable/shape"
-        android:onClick="submit"
         />
 
 
 
-</LinearLayout>
+</LinearLayout><!-- From: file:/Users/Shamrock/Desktop/103B/Android/Orienteering/Orienteering/app/src/main/res/layout/activity_login.xml -->

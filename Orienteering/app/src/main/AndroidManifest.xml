@@ -3,11 +3,17 @@
     package="orienteering.album"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +21,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ActivityStart"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +29,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".GridActivity" />
+        <activity
+            android:name="lincyu.chapter8_album2.ChooseMode"
+            android:label="@string/title_activity_choose_mode" >
+        </activity>
+        <activity
+            android:name="lincyu.chapter8_album2.GG"
+            android:label="@string/title_activity_gg" >
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".MyHintActivity"
+            android:label="@string/title_activity_my_hint" >
+        </activity>
+        <activity
+            android:name=".SaveLoadActivity"
+            android:label="@string/title_activity_save_load" >
+        </activity>
+        <activity
+            android:name=".StartActivity"
+            android:label="@string/title_activity_start" >
+        </activity>
     </application>
 
 </manifest>
