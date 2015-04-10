@@ -27,7 +27,8 @@ nbproject
 .build*
 
 # my files
-build
-.idea
-.gradle
-local.properties
+build/
+.idea/
+.gradle/
+Orienteering/local.properties
+
