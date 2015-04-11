@@ -22,6 +22,7 @@ class Client:
         self.latitude = 0.0
         self.longitude = 0.0
         self.others_msg = []
+        self.msg = []
 
     def set_name(self, name):
         self.name = name
@@ -37,6 +38,7 @@ class Server:
         port = 1024+random.randint(1, 1000)
         self.address = (ip, port)
         self.client = {}
+        self.init_hints = []
         self.hints = []
 
     def near(self, latitude, longitude, hint):
@@ -72,13 +74,25 @@ class Server:
                 if self.set_client_name(name, my_socket):
                     print >>sys.stderr, 'set name: ', name
                     response["success"] = "true"
+                    for c in self.client:
+                        self.client[my_socket].others_msg.extend(self.client[c].msg)
                 else:
                     response["success"] = "false"
                 response = json.dumps(response)
                 return response
                 
         elif json_type == 1:
+            response = {}
+            response["hintCnt"] = len(self.init_hints)
+            hint_id = 0
+            for h in self.init_hints:
+                hint = "hint"+str(hint_id)
+                response[hint] = h
+                hint_id = hint_id + 1
+            response = json.dumps(response)
             print >>sys.stderr, 'retrun hints'
+            return response
+
         elif json_type == 2:
             try:
                 latitude = json_data["lat"]
@@ -140,9 +154,14 @@ class Server:
 
             for c in self.client:
                 if c == my_socket:
-                    continue
-                self.client[c].others_msg.append(message)
+                    self.client[c].msg.append(message)
+                else: 
+                    self.client[c].others_msg.append(message)
             print >>sys.stderr, 'get msg: ', json_data["msg"]
+            response = {}
+            response["success"] = "true"
+            response = json.dumps(response)
+            return response
         else:
             print >>sys.stderr, 'none of above'
             
@@ -241,6 +260,11 @@ class Server:
                 # Remove message queue
                 del message_queues[s]
 
+    def set_init_hint(self, fname):
+        with open(fname) as f:
+            for line in f:
+                self.init_hints.append(line)
+
     def set_hint(self, fname):
         with open(fname) as f:
             for line in f:
@@ -250,4 +274,5 @@ class Server:
 if __name__ == '__main__':
     server = Server()
     server.set_hint("hints")
+    server.set_init_hint("init_hints")
     server.listen()

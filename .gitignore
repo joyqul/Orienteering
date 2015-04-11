@@ -1,5 +1,6 @@
 # Server test files
 Server/hints
+Server/init_hints
 
 # Numerous always-ignore extensions
 *.diff
