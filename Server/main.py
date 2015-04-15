@@ -11,8 +11,8 @@ PACKET_SIZE = 1024
 
 class Message:
     def __init__(self, latitude, longitude, content):
-        self.latitude = latitude
-        self.longitude = longitude
+        self.latitude = float(latitude)
+        self.longitude = float(longitude)
         self.content = content
         self.sent = []
 
@@ -42,7 +42,10 @@ class Server:
         self.hints = []
 
     def near(self, latitude, longitude, hint):
-        return True
+        print type(latitude), type(longitude), type(hint.latitude)
+        if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.0001:
+            return True
+        return False
 
     def handle_json(self, data, my_socket):
         try:
