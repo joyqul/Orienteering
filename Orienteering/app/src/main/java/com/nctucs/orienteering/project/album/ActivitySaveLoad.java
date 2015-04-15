@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import orienteering.album.R;
+import com.nctucs.orienteering.project.R;
 
 public class ActivitySaveLoad extends Activity implements View.OnClickListener{
 
