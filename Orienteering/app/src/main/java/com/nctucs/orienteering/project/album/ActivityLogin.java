@@ -4,34 +4,86 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nctucs.orienteering.project.JSONMsg.JSONType;
+import com.nctucs.orienteering.project.Param.ServerInfo;
 import com.nctucs.orienteering.project.R;
 
+import org.json.JSONObject;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+
+import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
 /**
  * Created by Shamrock on 2015/4/10.
  */
 public class ActivityLogin extends Activity implements View.OnClickListener {
 
-    SharedPreferences userData = null;
+    SharedPreferences sharedPreferences = null;
     EditText userID;
     Button submit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_login );
-        userData = getSharedPreferences( "userData" , MODE_PRIVATE );
+        sharedPreferences = getSharedPreferences( "userData" , MODE_PRIVATE );
+
+        submit = ( Button )   findViewById( R.id.button_submit );
+        submit.setOnClickListener( this );
 
         userID = ( EditText ) findViewById( R.id.edit_text );
-        submit = ( Button )   findViewById( R.id.button_submit );
-
-        submit.setOnClickListener( this );
 
 
     }
+
+
+    private class LogInThread extends Thread implements Runnable{
+        @Override
+        public void run() {
+            super.run();
+            String ID = userID.getText().toString();
+            try {
+
+
+                JSONType json = new JSONType(0);
+                json.put("playerName", ID);
+
+                tcpSocket socket = new tcpSocket();
+                Log.e("json", json.toString());
+                socket.send( json );
+                JSONObject result = socket.recieve();
+
+                if ( result.getBoolean( "success" ) == true ){
+                    socket.close();
+                    sharedPreferences.edit().putString( "userName" , ID).apply();
+                    Intent intent = new Intent( ActivityLogin.this , ActivitySaveLoad.class );
+                    startActivity( intent );
+                }
+                else{
+//                    Toast.makeText( ActivityLogin.this , "LogIn Failed!" , Toast.LENGTH_SHORT );
+                    socket.close();
+                }
+
+
+            }
+            catch ( Exception e ){
+                e.printStackTrace();
+//                Toast.makeText( ActivityLogin.this , "Login Failed" , Toast.LENGTH_SHORT ).show();
+            }
+        }
+    }
+
+
 
 
     @Override
@@ -42,41 +94,7 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
         if ( ID == null )
             Toast.makeText( ActivityLogin.this , "Please Enter something, stupid!!!" , Toast.LENGTH_SHORT  ).show();
         else{
-
-            try {
-
-
-                /*
-                JSONType0 msg = new JSONType0();
-                msg.put("playerName", ID);
-
-                Socket socket = new Socket( ServerInfo.SERVER_IP , ServerInfo.PORT );
-                DataOutputStream os = new DataOutputStream( socket.getOutputStream() );
-                DataInputStream  is = new DataInputStream(  socket.getInputStream() );
-
-                os.writeUTF(msg.toString());
-
-
-                JSONObject result = new JSONObject( is.readUTF() );
-
-                if ( result.get( "success" ).equals( true ) ){
-                    socket.close();
-                    Intent intent = new Intent( ActivityLogin.this , ActivitySaveLoad.class );
-                    startActivity( intent );
-                }
-                else{
-                    Toast.makeText( ActivityLogin.this , "LogIn Failed!" , Toast.LENGTH_SHORT );
-                    socket.close();
-                }
-*/
-                Intent intent = new Intent( ActivityLogin.this , ActivitySaveLoad.class );
-                startActivity( intent );
-
-            }
-            catch ( Exception e ){
-                e.printStackTrace();
-                Toast.makeText( ActivityLogin.this , "Login Failed" , Toast.LENGTH_SHORT ).show();
-            }
+            new LogInThread().start();
 
         }
 
