@@ -4,8 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import orienteering.album.R;
+import com.nctucs.orienteering.project.R;
 
 public class FragmentMyHint extends android.support.v4.app.Fragment {
     private View view;

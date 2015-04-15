@@ -13,8 +13,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import orienteering.album.R;
-
+import com.nctucs.orienteering.project.R;
 public class ActivityStart extends Activity {
 
     ListView lv;

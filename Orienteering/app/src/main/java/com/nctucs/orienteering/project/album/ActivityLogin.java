@@ -9,8 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import orienteering.album.R;
-
+import com.nctucs.orienteering.project.R;
 
 /**
  * Created by Shamrock on 2015/4/10.

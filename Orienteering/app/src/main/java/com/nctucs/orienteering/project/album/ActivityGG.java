@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import orienteering.album.R;
+import com.nctucs.orienteering.project.R;
 
 public class ActivityGG extends Activity {
 
