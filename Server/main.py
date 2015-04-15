@@ -35,7 +35,7 @@ class Client:
 
 class Server:
     def __init__(self, ip='127.0.0.1', port=10001):
-        port = 1024+random.randint(1, 1000)
+#port = 1024+random.randint(1, 1000)
         self.address = (ip, port)
         self.client = {}
         self.init_hints = []
@@ -69,6 +69,9 @@ class Server:
         if json_type == 0:
             try:
                 name = json_data["playerName"]
+            except KeyError, e:
+                print >>sys.stderr, e, 'no key playerName'
+                return 'ERROR'
             except ValueError, e:
                 print >>sys.stderr, e, 'no name obj'
                 return 'ERROR'
@@ -145,6 +148,7 @@ class Server:
                     msg_id = msg_id + 1
 
                 response["msgCnt"] = msg_id
+                del self.client[my_socket].others_msg[:]
                         
                 response = json.dumps(response)
                 return response
@@ -220,7 +224,7 @@ class Server:
                     if data:
                         # A readable client socket has data
                         print >>sys.stderr, 'received "%s" from %s' % (data, s.getpeername())
-                        response = self.handle_json(data, s)
+                        response = self.handle_json(data, s) + "\n"
                         message_queues[s].put(response)
                         # Add output channel for response
                         if s not in outputs:
@@ -275,7 +279,8 @@ class Server:
                 self.hints.append(Message(latitude, longitude, content))
 
 if __name__ == '__main__':
-    server = Server()
+    server = Server("140.113.27.45", 7123)
+#server = Server()
     server.set_hint("hints")
     server.set_init_hint("init_hints")
     server.listen()
