@@ -53,7 +53,7 @@
         android:layout_width="86dp"
         android:layout_height="wrap_content"
         android:text="BACK"
-        android:id="@+id/back_botton"
+        android:id="@+id/back_button"
         android:layout_gravity="center_horizontal"
         android:clickable="true"
         android:textColor="#ff2641ff" />
