@@ -6,6 +6,7 @@ import sys
 import argparse
 import random
 import Queue
+from socket import error as SocketError
 
 PACKET_SIZE = 1024
 
@@ -42,7 +43,7 @@ class Server:
         self.hints = []
 
     def near(self, latitude, longitude, hint):
-        print type(latitude), type(longitude), type(hint.latitude)
+#print type(latitude), type(longitude), type(hint.latitude)
         if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.0001:
             return True
         return False
@@ -219,7 +220,12 @@ class Server:
                     # Give the connection a queue for data we want to send
                     message_queues[connection] = Queue.Queue()
                 else:
-                    data = s.recv(PACKET_SIZE)
+                    try:
+                        data = s.recv(PACKET_SIZE)
+                    except SocketError, e:
+                        print >>sys.stderr, 'SocketError', e
+                        continue
+                    
                     print "get: ", data
                     if data:
                         # A readable client socket has data
