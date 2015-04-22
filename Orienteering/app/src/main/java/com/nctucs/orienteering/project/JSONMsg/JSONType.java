@@ -12,7 +12,7 @@ public class JSONType extends JSONObject {
 
     public JSONType( int type ) throws JSONException{
         super();
-        put( "jsonType" , 0 );
+        put( "jsonType" , type );
     }
 
 

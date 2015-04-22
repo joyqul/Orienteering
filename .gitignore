@@ -35,5 +35,5 @@ nbproject
 build/
 .idea/
 .gradle/
-Orienteering/local.properties
+local.properties
 
