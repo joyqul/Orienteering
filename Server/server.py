@@ -112,7 +112,10 @@ class Server:
             print >>sys.stderr, 'retrun hints'
             return response
 
-        elif json_type == 2:
+        ##################################
+        ### User send his/her position ###
+        ##################################
+        if json_type == 2:
             try:
                 latitude = json_data["lat"]
                 longitude = json_data["long"]
@@ -127,7 +130,7 @@ class Server:
 
                 player_id = 0
                 for s in self.client:
-                    if s == my_token:
+                    if self.client[s].game_id != self.client[my_token]:
                         continue
                     player = "player"+str(player_id)
                     player_id = player_id + 1
@@ -139,7 +142,7 @@ class Server:
                 response["playerCnt"] = player_id
 
                 hint_id = 0
-                for h in self.hints:
+                for h in self.games[playing_game_id].hints:
                     if my_token in h.sent:
                         continue
                     if self.near(latitude, longitude, h):
@@ -166,7 +169,10 @@ class Server:
                 response = json.dumps(response)
                 return response
                 
-        elif json_type == 3:
+        ##########################
+        ### User leave message ###
+        ##########################
+        if json_type == 3:
             content = json_data["msg"]
             latitude = self.client[my_token].latitude
             longitude = self.client[my_token].longitude
