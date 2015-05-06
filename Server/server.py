@@ -8,6 +8,7 @@ class Server:
         self.client = {}
         self.init_hints = []
         self.hints = []
+        self.games = []
 
     def near(self, latitude, longitude, hint):
 #print type(latitude), type(longitude), type(hint.latitude)
@@ -15,7 +16,7 @@ class Server:
             return True
         return False
 
-    def handle_json(self, data, my_socket):
+    def handle_json(self, data, my_token):
         try:
             json_data = json.loads(data)
         except ValueError, e:
@@ -34,7 +35,37 @@ class Server:
             print >>sys.stderr, e
             return 'ERROR'
 
-        if json_type == 0:
+        ### Fist time use this app ###
+        if json_type == -1:
+            m = md5.new()
+            mykey = m.hexdigest()
+            while mykey in self.client:
+                m.update("wala")
+                mykey = m.hexdigest()
+            self.client[mykey] = Client()
+            response = {}
+            response["token"] = mykey
+            response = json.dumps(response)
+            return response
+
+        ### Not the first time, so there's a token ###
+        ### Then get the token ###
+        try:
+            my_token = json_data["token"]
+        except KeyError, e:
+            print >>sys.stderr, e, 'no token'
+            return 'ERROR'
+            
+        ### Now we have token, then we can do things via token ###
+        ### Choosing a new game, if continue, it won't enter this phase ###
+        if json_type == 4:
+            response = {}
+            self.write_cnt_response(response, "game", self.games)
+            response = json.dumps(response)
+            print >>sys.stderr, 'retrun games'
+            return response
+        
+        elif json_type == 0:
             try:
                 name = json_data["playerName"]
             except KeyError, e:
@@ -45,11 +76,11 @@ class Server:
                 return 'ERROR'
             else:
                 response = {}
-                if self.set_client_name(name, my_socket):
+                if self.set_client_name(name, my_token):
                     print >>sys.stderr, 'set name: ', name
                     response["success"] = "true"
                     for c in self.client:
-                        self.client[my_socket].others_msg.extend(self.client[c].msg)
+                        self.client[my_token].others_msg.extend(self.client[c].msg)
                 else:
                     response["success"] = "false"
                 response = json.dumps(response)
@@ -57,12 +88,7 @@ class Server:
                 
         elif json_type == 1:
             response = {}
-            response["hintCnt"] = len(self.init_hints)
-            hint_id = 0
-            for h in self.init_hints:
-                hint = "hint"+str(hint_id)
-                response[hint] = h
-                hint_id = hint_id + 1
+            write_cnt_response(response, "hint", self.init_hints)
             response = json.dumps(response)
             print >>sys.stderr, 'retrun hints'
             return response
@@ -76,13 +102,13 @@ class Server:
                 return 'ERROR'
             else:
                 response = {}
-                self.client[my_socket].set_lat(latitude)
-                self.client[my_socket].set_long(longitude)
+                self.client[my_token].set_lat(latitude)
+                self.client[my_token].set_long(longitude)
                 print >>sys.stderr, 'lat: ', json_data["lat"], 'long: ', json_data["long"]
 
                 player_id = 0
                 for s in self.client:
-                    if s == my_socket:
+                    if s == my_token:
                         continue
                     player = "player"+str(player_id)
                     player_id = player_id + 1
@@ -95,18 +121,18 @@ class Server:
 
                 hint_id = 0
                 for h in self.hints:
-                    if my_socket in h.sent:
+                    if my_token in h.sent:
                         continue
                     if self.near(latitude, longitude, h):
                         hint = "hint"+str(hint_id)
                         response[hint] = h.content
                         hint_id = hint_id + 1
-                        h.sent.append(my_socket)
+                        h.sent.append(my_token)
 
                 response["hintCnt"] = hint_id
 
                 msg_id = 0
-                for m in self.client[my_socket].others_msg:
+                for m in self.client[my_token].others_msg:
                     data = {}
                     data["lat"] = m.latitude
                     data["long"] = m.longitude
@@ -116,19 +142,19 @@ class Server:
                     msg_id = msg_id + 1
 
                 response["msgCnt"] = msg_id
-                del self.client[my_socket].others_msg[:]
+                del self.client[my_token].others_msg[:]
                         
                 response = json.dumps(response)
                 return response
                 
         elif json_type == 3:
             content = json_data["msg"]
-            latitude = self.client[my_socket].latitude
-            longitude = self.client[my_socket].longitude
+            latitude = self.client[my_token].latitude
+            longitude = self.client[my_token].longitude
             message = Message(latitude, longitude, content)
 
             for c in self.client:
-                if c == my_socket:
+                if c == my_token:
                     self.client[c].msg.append(message)
                 else: 
                     self.client[c].others_msg.append(message)
@@ -142,11 +168,11 @@ class Server:
             
         return "test"
         
-    def set_client_name(self, name, my_socket):
+    def set_client_name(self, name, my_token):
         for client in self.client:
             if name == self.client[client].name:
                 return False
-        self.client[my_socket].set_name(name)
+        self.client[my_token].set_name(name)
         return True
 
     def listen(self):
@@ -239,6 +265,19 @@ class Server:
 
                 # Remove message queue
                 del message_queues[s]
+
+    def write_cnt_response(self, response, base_str, target_list):
+        response[base_str+"Cnt"] = len(target_list)
+        my_id = 0
+        for data in target_list:
+            label = base_str+str(my_id)
+            response[label] = data
+            my_id = my_id + 1
+
+    def set_game(self, fname):
+        with open(fname) as f:
+            for line in f:
+                self.games.append(line)
 
     def set_init_hint(self, fname):
         with open(fname) as f:
