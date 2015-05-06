@@ -2,6 +2,7 @@
 Server/hints
 Server/init_hints
 Server/log
+Server/*.pyc
 
 # Numerous always-ignore extensions
 *.diff
