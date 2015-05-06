@@ -35,7 +35,9 @@ class Server:
             print >>sys.stderr, e
             return 'ERROR'
 
+        ##############################
         ### Fist time use this app ###
+        ##############################
         if json_type == -1:
             m = md5.new()
             mykey = m.hexdigest()
@@ -48,16 +50,20 @@ class Server:
             response = json.dumps(response)
             return response
 
+        ##############################################
         ### Not the first time, so there's a token ###
-        ### Then get the token ###
+        ### Then get the token                     ###
+        ##############################################
         try:
             my_token = json_data["token"]
         except KeyError, e:
-            print >>sys.stderr, e, 'no token'
+            print >>sys.stderr, e, 'no key token'
             return 'ERROR'
             
-        ### Now we have token, then we can do things via token ###
+        ###################################################################
+        ### Now we have token, then we can do things via token          ###
         ### Choosing a new game, if continue, it won't enter this phase ###
+        ###################################################################
         if json_type == 4:
             response = {}
             self.write_cnt_response(response, "game", self.games)
@@ -65,28 +71,34 @@ class Server:
             print >>sys.stderr, 'retrun games'
             return response
         
-        elif json_type == 0:
+        ########################################
+        ### User set his/her name and gameId ###
+        ########################################
+        if json_type == 0:
             try:
                 name = json_data["playerName"]
             except KeyError, e:
                 print >>sys.stderr, e, 'no key playerName'
                 return 'ERROR'
-            except ValueError, e:
-                print >>sys.stderr, e, 'no name obj'
+            try:
+                game_id = json_data["gameId"]
+            except KeyError, e:
+                print >>sys.stderr, e, 'no key gameId'
                 return 'ERROR'
+
+            response = {}
+            if self.set_client_name(name, my_token):
+                self.client[my_token].init(game_id)
+                print >>sys.stderr, 'set name: ', name, ' & set game_id: ', game_id
+                response["success"] = "true"
+                for c in self.client:
+                    self.client[my_token].others_msg.extend(self.client[c].msg)
             else:
-                response = {}
-                if self.set_client_name(name, my_token):
-                    print >>sys.stderr, 'set name: ', name
-                    response["success"] = "true"
-                    for c in self.client:
-                        self.client[my_token].others_msg.extend(self.client[c].msg)
-                else:
-                    response["success"] = "false"
-                response = json.dumps(response)
-                return response
-                
-        elif json_type == 1:
+                response["success"] = "false"
+            response = json.dumps(response)
+            return response
+
+        if json_type == 1:
             response = {}
             write_cnt_response(response, "hint", self.init_hints)
             response = json.dumps(response)
