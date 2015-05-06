@@ -12,5 +12,6 @@ from socket import error as SocketError
 
 # Module write by myself
 from message import *
+from game import *
 from client import *
 from server import *

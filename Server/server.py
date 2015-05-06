@@ -6,8 +6,6 @@ class Server:
         port = 1024+random.randint(1, 1000)
         self.address = (ip, port)
         self.client = {}
-        self.init_hints = []
-        self.hints = []
         self.games = []
 
     def near(self, latitude, longitude, hint):
@@ -66,7 +64,12 @@ class Server:
         ###################################################################
         if json_type == 4:
             response = {}
-            self.write_cnt_response(response, "game", self.games)
+            response["gameCnt"] = len(self.games)
+            gid = 0
+            for g in self.games:
+                label = "game"+str(gid)
+                response[label] = g.name
+                gid = gid + 1
             response = json.dumps(response)
             print >>sys.stderr, 'retrun games'
             return response
@@ -98,9 +101,13 @@ class Server:
             response = json.dumps(response)
             return response
 
+        ##################################
+        ### User get the initial hints ###
+        ##################################
+        playing_game_id = self.client[my_token].game_id
         if json_type == 1:
             response = {}
-            write_cnt_response(response, "hint", self.init_hints)
+            self.write_cnt_response(response, "hint", self.games[playing_game_id].init_hints)
             response = json.dumps(response)
             print >>sys.stderr, 'retrun hints'
             return response
@@ -289,15 +296,7 @@ class Server:
     def set_game(self, fname):
         with open(fname) as f:
             for line in f:
-                self.games.append(line)
+                game_name, init_hints_file, hints_file = line.split(',')
+                hints_file = hints_file.split('\n')[0]
+                self.games.append(Game(game_name, init_hints_file, hints_file))
 
-    def set_init_hint(self, fname):
-        with open(fname) as f:
-            for line in f:
-                self.init_hints.append(line)
-
-    def set_hint(self, fname):
-        with open(fname) as f:
-            for line in f:
-                latitude, longitude, content = line.split(',')
-                self.hints.append(Message(latitude, longitude, content))
