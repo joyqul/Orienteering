@@ -168,14 +168,13 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
 
                     if ( lastKnowLocation == null ) continue;
 
-                    JSONType jsonType = new JSONType( 2 );
-
-
+                    JSONType jsonType = new JSONType(2);
 
                     jsonType.put("lat", lastKnowLocation.getLatitude());
-                    jsonType.put( "long" , lastKnowLocation.getLongitude() );
+                    jsonType.put("long", lastKnowLocation.getLongitude());
+                    jsonType.put("token", sharedPreferences.getString("token", null));
 
-                    socket.send( jsonType );
+                    socket.send(jsonType);
 
 
                     JSONObject json = socket.recieve();
@@ -200,7 +199,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     @Override
     public void onResume() {
         super.onResume();
-        sharedPreferences = getActivity().getSharedPreferences( "userData" , Context.MODE_PRIVATE );
+        sharedPreferences = getActivity().getSharedPreferences("userData" , Context.MODE_PRIVATE);
         LocationManager lm = (LocationManager)getActivity().getSystemService( Context.LOCATION_SERVICE );
         lm.requestLocationUpdates( LocationManager.GPS_PROVIDER , 500 , 1 , FragmentGoogleMap.this );
         lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER , 1000 , 1 , FragmentGoogleMap.this );

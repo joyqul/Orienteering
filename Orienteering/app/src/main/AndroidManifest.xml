@@ -9,59 +9,47 @@
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-   />
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/l1"
         android:label="@string/app_name"
-
         android:theme="@style/AppTheme" >
-
-
-
         <activity
-
-            android:name="com.nctucs.orienteering.project.album.ActivityStart"
+            android:name=".album.ActivityStart"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name="com.nctucs.orienteering.project.album.ActivityLogin"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name="com.nctucs.orienteering.project.album.ActivityMain"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name="com.nctucs.orienteering.project.album.ActivityChooseMode"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name="com.nctucs.orienteering.project.album.ActivitySaveLoad"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name="com.nctucs.orienteering.project.album.ActivityGG"
-            android:screenOrientation="portrait"
-            />
-
-
-
+        <activity
+            android:name=".album.ActivityLogin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.ActivityMain"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.ActivityChooseMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.ActivitySaveLoad"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.ActivityGG"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.ActivityChooseGame"
+            android:label="@string/title_activity_activity_choose_game" >
+        </activity>
     </application>
 
 </manifest>

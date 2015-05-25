@@ -10,5 +10,6 @@
     <string name="title_activity_my_hint">MyHintActivity</string>
     <string name="title_activity_save_load">SaveLoadActivity</string>
     <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_activity_choose_game">ActivityChooseGame</string>
 
 </resources>

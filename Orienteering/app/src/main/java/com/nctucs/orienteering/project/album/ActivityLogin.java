@@ -32,16 +32,19 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
     SharedPreferences sharedPreferences = null;
     EditText userID;
     Button submit;
+    int gameId;
+    String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_login );
-        sharedPreferences = getSharedPreferences( "userData" , MODE_PRIVATE );
+        setContentView(R.layout.activity_login);
+        sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+        gameId = sharedPreferences.getInt("gameId", 0);
+        token = sharedPreferences.getString("token", null);
+        submit = (Button)findViewById(R.id.button_submit);
+        submit.setOnClickListener(this);
 
-        submit = ( Button )   findViewById( R.id.button_submit );
-        submit.setOnClickListener( this );
-
-        userID = ( EditText ) findViewById( R.id.edit_text );
+        userID = (EditText)findViewById(R.id.edit_text);
 
 
     }
@@ -54,22 +57,22 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
             String ID = userID.getText().toString();
             try {
 
-
                 JSONType json = new JSONType(0);
+                json.put("token", token);
                 json.put("playerName", ID);
-
+                json.put("gameId", gameId);
                 tcpSocket socket = new tcpSocket();
                 Log.e("json", json.toString());
                 socket.send( json );
                 JSONObject result = socket.recieve();
 
-                if ( result.getBoolean( "success" ) == true ){
+                if (result.getBoolean( "success" ) == true){
                     socket.close();
-                    sharedPreferences.edit().putString( "userName" , ID).apply();
-                    Intent intent = new Intent( ActivityLogin.this , ActivitySaveLoad.class );
-                    startActivity( intent );
-                }
-                else{
+                    sharedPreferences.edit().putString("userName", ID).apply();
+                    Intent intent = new Intent(ActivityLogin.this , ActivityMain.class);
+                    intent.putExtra("isNewGame", true);
+                    startActivity(intent);
+                }else{
 //                    Toast.makeText( ActivityLogin.this , "LogIn Failed!" , Toast.LENGTH_SHORT );
                     socket.close();
                 }

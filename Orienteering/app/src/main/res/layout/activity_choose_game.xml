@@ -21,10 +21,9 @@
 
 
     <GridView android:id="@+id/gv_choose_game"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-
-        android:background="#ff33a2ff"
-        android:stretchMode="columnWidth"/>
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center"
+              android:background="#ff33a2ff"
+              android:stretchMode="columnWidth"/>
 </LinearLayout>

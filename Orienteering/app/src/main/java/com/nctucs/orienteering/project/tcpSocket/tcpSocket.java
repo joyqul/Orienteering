@@ -20,23 +20,18 @@ public class tcpSocket extends Socket {
 
     DataInputStream is;
     DataOutputStream os;
-    //PrintWriter output;
-    //BufferedReader input;
 
     public tcpSocket() throws IOException {
         super( ServerInfo.SERVER_IP  , ServerInfo.PORT );
 
         is = new DataInputStream(this.getInputStream());
         os = new DataOutputStream(this.getOutputStream());
-        //output = new PrintWriter(os);
-        //input = new BufferedReader(new InputStreamReader(is));
     }
 
     public void send(JSONObject obj) {
         try {
             Log.e("send", obj.toString());
             os.write( obj.toString().getBytes("UTF-8") );
-            //os.writeUTF(obj.toString());
         }
         catch( Exception e){
             e.printStackTrace();
