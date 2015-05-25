@@ -79,7 +79,7 @@ Server --> Client
 5. {"msgCng": int (number of message)}
 6. {"msg0" to "msg(cnt-1)": {"lat": float, "long": float, "content": string}}
 7. {"keyCnt": int (number of key)}
-8. {"key0" to "key(cnt-1)": int (index of key, 0-base), char (final string that index's char}
+8. {"key0" to "key(cnt-1)": {"index": int (index of key, 0-base), "pwd": char (final string that index's char} }
 
 Leave message
 ===
