@@ -26,8 +26,10 @@ import org.json.JSONObject;
  */
 public class ActivityMain extends FragmentActivity {
 
-    private boolean isNewGame ;
+    private boolean isNewGame;
     private AlertDialog alert;
+    SharedPreferences sharedPreferences;
+    String token;
 
     FragmentTabHost tabHost;
 
@@ -38,14 +40,14 @@ public class ActivityMain extends FragmentActivity {
 
         tabHost = (FragmentTabHost) findViewById( android.R.id.tabhost );
         SetTabs();
-
+        sharedPreferences = getSharedPreferences( "userData" , MODE_PRIVATE );
+        token = sharedPreferences.getString("token", null);
         Intent intent = getIntent();
-        isNewGame = intent.getBooleanExtra( "isNewGame" , true );
+        isNewGame = intent.getBooleanExtra("isNewGame", true );
         if ( isNewGame ){
-            SharedPreferences sharedPreferences = getSharedPreferences( "userData" , MODE_PRIVATE );
-            sharedPreferences.edit().putInt( "msgCnt" , 0 ).apply();
-            sharedPreferences.edit().putInt( "hintCnt" , 0 ).apply();
-            sharedPreferences.edit().putInt( "keyCnt" , 0 ).apply();
+            sharedPreferences.edit().putInt("msgCnt", 0).apply();
+            sharedPreferences.edit().putInt("hintCnt", 0).apply();
+            sharedPreferences.edit().putInt("keyCnt", 0).apply();
         }
         new GetHintThread().start();
     }
@@ -92,7 +94,9 @@ public class ActivityMain extends FragmentActivity {
             public void run () {
                 try {
                     tcpSocket socket = new tcpSocket();
-                    socket.send( new JSONType(1) );
+                    JSONObject json = new JSONType(1);
+                    json.put("token", token);
+                    socket.send(json);
 
                     JSONObject result = socket.recieve();
 
@@ -109,7 +113,7 @@ public class ActivityMain extends FragmentActivity {
 
 
             }
-    };
+    }
 
     private void SetTabs(){
 

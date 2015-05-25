@@ -35,7 +35,8 @@ public class FragmentLeaveMessage extends android.support.v4.app.Fragment implem
     static View view;
     EditText inputText;
     Button submit , cancel;
-
+    SharedPreferences userData;
+    String token;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -61,9 +62,10 @@ public class FragmentLeaveMessage extends android.support.v4.app.Fragment implem
             super.run();
             try {
                 tcpSocket socket = new tcpSocket();
-                JSONType json = new JSONType( 3 );
+                JSONType json = new JSONType(3);
+                json.put("token", token);
                 json.put("msg", toSend);
-                socket.send( json );
+                socket.send(json);
             }
             catch ( Exception e ){
                 e.printStackTrace();
@@ -77,8 +79,9 @@ public class FragmentLeaveMessage extends android.support.v4.app.Fragment implem
         if ( v.getId() == R.id.send_button ){
             Log.e("input" , inputText.getText().toString() );
             String content = inputText.getText().toString();
-
-            LeaveMessageThread t = new  LeaveMessageThread( content );
+            userData = getActivity().getSharedPreferences("userData", Context.MODE_PRIVATE);
+            token = userData.getString("token", null);
+            LeaveMessageThread t = new LeaveMessageThread(content);
             t.start();
         }
         else{

@@ -10,22 +10,58 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
+import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
+
+import org.json.JSONObject;
+
 public class ActivityStart extends Activity {
 
     ListView lv;
     ProgressBar loadingBar = null;
     SharedPreferences userData = null;
-    final int animateSec = 10;
+    String token;
+    boolean isNewGame = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        userData = getSharedPreferences( "userData" , MODE_PRIVATE );
+        userData = getSharedPreferences("userData", MODE_PRIVATE);
+        token = userData.getString("token", null);
+        if(token == null){
+            isNewGame = true;
+            new GetTokenThread().start();
+            Log.e("new token", token);
+            userData.edit().putString("token", token).apply();
+        }else{
+            isNewGame = false;
+            Log.e("token", token);
+        }
         loadingBar = (ProgressBar)findViewById( R.id.progress_bar );
+    }
+
+    private class GetTokenThread extends Thread implements Runnable{
+        @Override
+        public void run () {
+            try {
+                tcpSocket socket = new tcpSocket();
+                socket.send(new JSONType(-1));
+
+                JSONObject result = socket.recieve();
+                token = result.getString("token");
+            }
+            catch ( Exception e ){
+                e.printStackTrace();
+            }
+
+
+        }
     }
 
     @Override
@@ -48,8 +84,10 @@ public class ActivityStart extends Activity {
 
                 }
 
-                Intent intent = new Intent( ActivityStart.this , ActivityChooseMode.class );
-                startActivity( intent );
+                if(isNewGame){
+                    Intent intent = new Intent(ActivityStart.this, ActivitySaveLoad.class);
+                    startActivity(intent);
+                }
 
             }
         } ).start();
