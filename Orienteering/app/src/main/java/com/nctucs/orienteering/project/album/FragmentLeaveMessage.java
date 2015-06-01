@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,11 +21,14 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
 import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
 
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +55,22 @@ public class FragmentLeaveMessage extends android.support.v4.app.Fragment implem
 
     }
 
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if ( msg.what == 1 ){
+                Toast.makeText( getActivity() , "success" , Toast.LENGTH_SHORT ).show();
+                inputText.setText("");
+            }
+            else{
+                Toast.makeText( getActivity() , "failed" , Toast.LENGTH_SHORT ).show();
+
+            }
+        }
+    };
+
+
     private class LeaveMessageThread extends Thread implements  Runnable {
         private String toSend;
 
@@ -66,6 +87,21 @@ public class FragmentLeaveMessage extends android.support.v4.app.Fragment implem
                 json.put("token", token);
                 json.put("msg", toSend);
                 socket.send(json);
+                JSONObject result = socket.recieve();
+                if ( result.getBoolean( "success" ) == true ){
+                    Message msg = new Message();
+                    msg.what = 1;
+
+                    handler.sendMessage( msg );
+
+                }
+                else{
+
+                    Message msg = new Message();
+                    msg.what = 2;
+
+                    handler.sendMessage( msg );
+                }
             }
             catch ( Exception e ){
                 e.printStackTrace();
