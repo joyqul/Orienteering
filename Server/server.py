@@ -3,7 +3,7 @@ PACKET_SIZE = 1024
 
 class Server:
     def __init__(self, ip='127.0.0.1', port=10001):
-        port = 1024+random.randint(1, 1000)
+#port = 1024+random.randint(1, 1000)
         self.address = (ip, port)
         self.client = {}
         self.games = []
@@ -181,8 +181,8 @@ class Server:
             for c in self.client:
                 if c == my_token:
                     self.client[c].msg.append(message)
-                else: 
-                    self.client[c].others_msg.append(message)
+                self.client[c].others_msg.append(message)
+
             print >>sys.stderr, 'get msg: ', json_data["msg"]
             response = {}
             response["success"] = "true"
