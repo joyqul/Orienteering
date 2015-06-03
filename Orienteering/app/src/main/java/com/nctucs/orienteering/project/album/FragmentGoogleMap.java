@@ -105,6 +105,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
                 int playerCnt = json.getInt("playerCnt");
                 int hintCnt = json.getInt("hintCnt");
                 int msgCnt = json.getInt("msgCnt");
+                int keyCnt = json.getInt("keyCnt");
 
                 for (int i = 0; i < playerCnt; i++) {
                     JSONObject subJson = json.getJSONObject("player" + i);
@@ -143,11 +144,17 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
                     webView.loadUrl(setMessage);
                 }
 
-
                 int oriHintCnt = sharedPreferences.getInt("hintCnt", 0);
                 for (int i = 0; i < hintCnt; i++)
                     sharedPreferences.edit().putString("hint" + (i + oriHintCnt), json.getString("hint" + i)).apply();
                 sharedPreferences.edit().putInt("hintCnt", oriHintCnt + hintCnt);
+
+                for(int i=0;i<keyCnt;i++){
+                    JSONObject subJson = json.getJSONObject("key" + i);
+                    int index = subJson.getInt("index");
+                    String pwd = subJson.getString("pwd");
+                    sharedPreferences.edit().putString("key" + index, pwd).apply();
+                }
             }
             catch ( Exception e ){
                 e.printStackTrace();

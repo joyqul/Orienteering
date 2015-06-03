@@ -61,7 +61,6 @@ public class ActivityMain extends FragmentActivity {
                 JSONObject json = new JSONObject(bundle.getString("json"));
                 int hintCnt = json.getInt( "hintCnt" );
                 AlertDialog.Builder builder = new AlertDialog.Builder( ActivityMain.this );
-
                 LayoutInflater inflater = getLayoutInflater();
                 View v = inflater.inflate( R.layout.dialog_hint , null );
                 String str = "";

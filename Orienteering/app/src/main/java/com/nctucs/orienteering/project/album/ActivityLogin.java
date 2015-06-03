@@ -69,6 +69,10 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
                 if (result.getBoolean( "success" ) == true){
                     socket.close();
                     sharedPreferences.edit().putString("userName", ID).apply();
+                    sharedPreferences.edit().putString("answer", result.getString("answer")).apply();
+                    sharedPreferences.edit().putFloat("goalLat", ((float)result.getDouble("goalLat"))).apply();
+                    sharedPreferences.edit().putFloat("goalLong", ((float)result.getDouble("goalLong"))).apply();
+                    sharedPreferences.edit().putInt("totalKey", result.getInt("totalKey")).apply();
                     Intent intent = new Intent(ActivityLogin.this , ActivityMain.class);
                     intent.putExtra("isNewGame", true);
                     startActivity(intent);
