@@ -2,6 +2,7 @@
 Server/hints
 Server/init_hints
 Server/games
+Server/keys
 Server/log
 Server/*.pyc
 
