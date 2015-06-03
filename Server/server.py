@@ -3,13 +3,13 @@ PACKET_SIZE = 1024
 
 class Server:
     def __init__(self, ip='127.0.0.1', port=10001):
-#port = 1024+random.randint(1, 1000)
+        port = 1024+random.randint(1, 1000)
         self.address = (ip, port)
         self.client = {}
         self.games = []
 
     def near(self, latitude, longitude, hint):
-#print type(latitude), type(longitude), type(hint.latitude)
+        print type(latitude), type(longitude), type(hint.latitude)
         if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.0001:
             return True
         return False
@@ -98,6 +98,11 @@ class Server:
                     self.client[my_token].others_msg.extend(self.client[c].msg)
             else:
                 response["success"] = "false"
+
+            response["answer"] = self.games[game_id].answer
+            response["goalLat"] = self.games[game_id].goal_lat
+            response["goalLong"] = self.games[game_id].goal_long
+            response["totalKey"] = self.games[game_id].total_key
             response = json.dumps(response)
             return response
 
@@ -302,7 +307,6 @@ class Server:
     def set_game(self, fname):
         with open(fname) as f:
             for line in f:
-                game_name, init_hints_file, hints_file = line.split(',')
-                hints_file = hints_file.split('\n')[0]
-                self.games.append(Game(game_name, init_hints_file, hints_file))
+                game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key = line.split(',')
+                self.games.append(Game(game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key))
 
