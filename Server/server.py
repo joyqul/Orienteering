@@ -9,7 +9,7 @@ class Server:
         self.games = []
 
     def near(self, latitude, longitude, hint):
-        print type(latitude), type(longitude), type(hint.latitude)
+#print type(latitude), type(longitude), type(hint.latitude)
         if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.0001:
             return True
         return False
@@ -170,7 +170,18 @@ class Server:
 
                 response["msgCnt"] = msg_id
                 del self.client[my_token].others_msg[:]
+
+                key_id = 0
+                for k in self.games[self.client[my_token].game_id].keys:
+                    if self.near(latitude, longitude, k):
+                        data = {}
+                        key = "key"+str(key_id)
+                        data["index"] = k.index
+                        data["pwd"] = k.content
+                        response[key] = data
+                        key_id = key_id + 1
                         
+                response["keyCnt"] = key_id
                 response = json.dumps(response)
                 return response
                 
@@ -307,6 +318,7 @@ class Server:
     def set_game(self, fname):
         with open(fname) as f:
             for line in f:
-                game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key = line.split(',')
-                self.games.append(Game(game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key))
+                game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key, key_file = line.split(',')
+                key_file = key_file.split('\n')[0]
+                self.games.append(Game(game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key, key_file))
 
