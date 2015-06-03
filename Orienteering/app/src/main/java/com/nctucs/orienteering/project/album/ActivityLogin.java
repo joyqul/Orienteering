@@ -76,6 +76,7 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
                     Intent intent = new Intent(ActivityLogin.this , ActivityMain.class);
                     intent.putExtra("isNewGame", true);
                     startActivity(intent);
+                    ActivityLogin.this.finish();
                 }else{
 //                    Toast.makeText( ActivityLogin.this , "LogIn Failed!" , Toast.LENGTH_SHORT );
                     socket.close();

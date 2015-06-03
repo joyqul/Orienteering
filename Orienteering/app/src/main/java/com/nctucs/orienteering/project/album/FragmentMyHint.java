@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +50,12 @@ public class FragmentMyHint extends android.support.v4.app.Fragment {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userData" , Context.MODE_PRIVATE);
         int hintCnt = sharedPreferences.getInt( "hintCnt" , 0 );
+        Log.e("HintCnt" , hintCnt+"");
         items.clear();
         for ( int i = 0 ; i < hintCnt ; i++ ){
             Map<String,Object> map = new HashMap<String, Object>();
             map.put( "text", sharedPreferences.getString("hint"+i , "NULL") );
+            map.put( "image" , R.drawable.idea);
             items.add( map );
         }
         adapter.notifyDataSetChanged();

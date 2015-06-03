@@ -104,6 +104,7 @@ public class ActivityChooseGame extends Activity{
                 Intent intent = new Intent(ActivityChooseGame.this, ActivityLogin.class);
                 intent.putExtra("gameId", i);
                 startActivity(intent);
+                ActivityChooseGame.this.finish();
             }
         };
     };

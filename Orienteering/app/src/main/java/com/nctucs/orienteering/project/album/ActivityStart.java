@@ -108,6 +108,7 @@ public class ActivityStart extends Activity {
                 }else{
                     Intent intent = new Intent(ActivityStart.this, ActivitySaveLoad.class);
                     startActivity(intent);
+                    ActivityStart.this.finish();
                 }
 
             }

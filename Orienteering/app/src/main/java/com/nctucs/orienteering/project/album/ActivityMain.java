@@ -48,6 +48,7 @@ public class ActivityMain extends FragmentActivity {
             sharedPreferences.edit().putInt("msgCnt", 0).apply();
             sharedPreferences.edit().putInt("hintCnt", 0).apply();
             sharedPreferences.edit().putInt("keyCnt", 0).apply();
+            sharedPreferences.edit().putBoolean("initHint" , false).apply();
         }
         new GetHintThread().start();
     }
@@ -63,11 +64,25 @@ public class ActivityMain extends FragmentActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder( ActivityMain.this );
                 LayoutInflater inflater = getLayoutInflater();
                 View v = inflater.inflate( R.layout.dialog_hint , null );
-                String str = "";
-                for ( int i = 0 ; i < hintCnt ; i++ ) {
-                    str += json.getString("hint" + i) + "\n";
 
+                if ( !sharedPreferences.contains("initHint") || sharedPreferences.getBoolean("initHint" , false) == false ) {
+
+                    int oriHintCnt = sharedPreferences.getInt("hintCnt", 0);
+                    for (int i = 0; i < hintCnt; i++)
+                        sharedPreferences.edit().putString("hint" + (i + oriHintCnt), json.getString("hint" + i)).apply();
+
+                    Log.e("putted", json.getString("hint0"));
+
+                    sharedPreferences.edit().putInt("hintCnt", oriHintCnt + hintCnt).apply();
+                    sharedPreferences.edit().putBoolean( "initHint" , true ).apply();
                 }
+
+
+                String str = "You've got some hint, go check it out!";
+                //for ( int i = 0 ; i < hintCnt ; i++ ) {
+                //    str += json.getString("hint" + i) + "\n";
+
+                //}
                 ( (TextView)v.findViewById( R.id.text_hint_content ) ).setText( str );
                 ( (Button)v.findViewById( R.id.dialog_button ) ).setOnClickListener(
                 new View.OnClickListener() {
