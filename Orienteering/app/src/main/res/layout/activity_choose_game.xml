@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:layout_centerHorizontal="true"
 
-    android:background="#ff33a2ff"
+    android:background="@drawable/background2"
     android:weightSum="1">
 
     <TextView
@@ -24,6 +24,6 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:gravity="center"
-              android:background="#ff33a2ff"
+              android:background="#ffffffff"
               android:stretchMode="columnWidth"/>
 </LinearLayout>

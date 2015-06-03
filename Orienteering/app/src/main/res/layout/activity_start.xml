@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:layout_centerHorizontal="true"
 
-    android:background="#ff33a2ff"
+    android:background="@drawable/startbbackground"
     android:weightSum="1">
 
 
