@@ -8,6 +8,35 @@ class Server:
         self.client = {}
         self.games = []
 
+    def handle_host(self, data):
+        blocks = data.split(',')
+        if len(blocks) < 5:
+            return "BAD REQUEST"
+
+        game_id = int(blocks[1])
+        latitude = float(blocks[2])
+        longitude = float(blocks[3])
+
+        #########################################
+        # Add hint to certain game id           #
+        # ------------------------------------- #
+        # hint,(game id),(lat),(long),(content) #
+        #########################################
+        if blocks[0] == "hint":
+            self.games[game_id].add_hint(Message(latitude, longitude, blocks[4]))
+            return "OK"
+
+        ###########################################
+        # Add key to certain game id              #
+        # --------------------------------------- #
+        # key,(key id),(lat),(long),(index),(pwd) #
+        ###########################################
+        if blocks[0] == "key":
+            self.games[game_id].add_key(Key(latitude, longitude, blocks[4], blocks[5]))
+            return "OK"
+
+        return "BAD REQUEST"
+
     def near(self, latitude, longitude, hint):
 #print type(latitude), type(longitude), type(hint.latitude)
         if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.0001:
@@ -18,11 +47,7 @@ class Server:
         try:
             json_data = json.loads(data)
         except ValueError, e:
-            print >>sys.stderr, e
-            return 'ERROR'
-        except TypeError, e:
-            print >>sys.stderr, e
-            return 'ERROR'
+            return self.handle_host(data)
 
         try:
             json_type = json_data['jsonType']

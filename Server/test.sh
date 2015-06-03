@@ -1,5 +1,5 @@
 #!/usr/bin/expect -f
-spawn telnet 127.0.0.1 1298
+spawn telnet 127.0.0.1 1734
 sleep 1
 send "{\"jsonType\": -1}\n"
 expect -re "feedback"
@@ -10,6 +10,12 @@ expect -re "feedback"
 send "{\"jsonType\": 1, \"token\": \"d41d8cd98f00b204e9800998ecf8427e\"}\n"
 expect -re "feedback"
 send "{\"jsonType\": 2, \"token\": \"d41d8cd98f00b204e9800998ecf8427e\", \"lat\": 24.7837997, \"long\": 120.9952618}\n"
+expect -re "feedback"
+send "hint,0,10,20,try to add hint,\n"
+expect -re "feedback"
+send "key,0,10,20,4,n,\n"
+expect -re "feedback"
+send "{\"jsonType\": 2, \"token\": \"d41d8cd98f00b204e9800998ecf8427e\", \"lat\": 10, \"long\": 20}\n"
 expect -re "feedback"
 send "{\"jsonType\": 2, \"token\": \"d41d8cd98f00b204e9800998ecf8427e\", \"lat\": 24.7853808, \"long\": 120.9991967}\n"
 expect -re "feedback"
