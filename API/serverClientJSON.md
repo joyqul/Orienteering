@@ -93,3 +93,17 @@ Client --> Server
 Server --> Client
 ---
 1. {"success": [true, false]}
+
+Ranking
+===
+
+Client --> Server
+---
+1. {"jsonType": 5}
+2. {"token": string (md5 hash)}
+
+Server --> Client
+---
+1. {"rankCnt": int}
+2. {"rank0" to "rank(cnt-1)": {"time": string, "name": string}}
+
