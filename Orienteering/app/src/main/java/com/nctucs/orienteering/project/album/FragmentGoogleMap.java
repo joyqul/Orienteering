@@ -38,6 +38,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     private static Location lastKnowLocation = null;
     private WebView webView;
     boolean loadFinish = false;
+    boolean updateLocation = false;
     private SharedPreferences sharedPreferences;
     @Override
     public void onProviderEnabled(String provider) {
@@ -164,7 +165,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
             try {
                 tcpSocket socket = new tcpSocket();
 
-                while ( true ) {
+                while ( updateLocation ) {
 
                     if ( lastKnowLocation == null ) continue;
 
@@ -212,7 +213,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         }
 
 
-
+        updateLocation = true;
         new UpdateLocationsThread().start();
 
     }
@@ -222,6 +223,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         super.onStop();
         LocationManager lm = (LocationManager)getActivity().getSystemService( Context.LOCATION_SERVICE );
         lm.removeUpdates( FragmentGoogleMap.this );
+        updateLocation = false;
     }
 
 

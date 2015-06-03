@@ -65,8 +65,10 @@ public class ActivityMain extends FragmentActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View v = inflater.inflate( R.layout.dialog_hint , null );
                 String str = "";
-                for ( int i = 0 ; i < hintCnt ; i++ )
-                    str += json.getString( "hint" + i ) + "\n";
+                for ( int i = 0 ; i < hintCnt ; i++ ) {
+                    str += json.getString("hint" + i) + "\n";
+
+                }
                 ( (TextView)v.findViewById( R.id.text_hint_content ) ).setText( str );
                 ( (Button)v.findViewById( R.id.dialog_button ) ).setOnClickListener(
                 new View.OnClickListener() {

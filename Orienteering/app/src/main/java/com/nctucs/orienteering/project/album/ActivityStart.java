@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ListView;
@@ -37,14 +38,28 @@ public class ActivityStart extends Activity {
         if(token == null){
             isNewGame = true;
             new GetTokenThread().start();
-            Log.e("new token", token);
-            userData.edit().putString("token", token).apply();
+
         }else{
             isNewGame = false;
             Log.e("token", token);
         }
         loadingBar = (ProgressBar)findViewById( R.id.progress_bar );
     }
+
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if ( msg.what == 1 ){
+                Log.e("new token", token);
+                userData.edit().putString("token", token).apply();
+            }
+
+        }
+    };
+
+
 
     private class GetTokenThread extends Thread implements Runnable{
         @Override
@@ -55,6 +70,9 @@ public class ActivityStart extends Activity {
 
                 JSONObject result = socket.recieve();
                 token = result.getString("token");
+                Message msg = new Message();
+                msg.what = 1;
+                handler.sendMessage( msg );
             }
             catch ( Exception e ){
                 e.printStackTrace();
@@ -83,8 +101,11 @@ public class ActivityStart extends Activity {
                     loadingBar.setProgress( i );
 
                 }
-
                 if(isNewGame){
+                    Intent intent = new Intent(ActivityStart.this, ActivityChooseGame.class);
+                    startActivity(intent);
+                    ActivityStart.this.finish();
+                }else{
                     Intent intent = new Intent(ActivityStart.this, ActivitySaveLoad.class);
                     startActivity(intent);
                 }
