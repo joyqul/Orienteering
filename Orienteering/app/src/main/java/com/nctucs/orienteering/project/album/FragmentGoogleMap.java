@@ -39,6 +39,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     private WebView webView;
     boolean loadFinish = false;
     boolean updateLocation = false;
+    boolean resetPosition = false;
     private SharedPreferences sharedPreferences;
     @Override
     public void onProviderEnabled(String provider) {
@@ -53,11 +54,19 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     @Override
     public void onLocationChanged(Location location) {
         if ( location != null && loadFinish ){
+            Log.e("locationChanged", location.getLatitude()+" "+location.getLongitude());
             final String setMarker = "javascript:moveMarkerTo(" +
                     location.getLatitude() + "," +
                     location.getLongitude() + ")";
             lastKnowLocation = location;
             webView.loadUrl(setMarker);
+
+            if ( resetPosition ){
+                final String goToCurrentPosition = "javascript:goToCurrentPosition()";
+                webView.loadUrl( goToCurrentPosition );
+                resetPosition = false;
+            }
+
         }
     }
 
@@ -147,7 +156,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
                 int oriHintCnt = sharedPreferences.getInt("hintCnt", 0);
                 for (int i = 0; i < hintCnt; i++)
                     sharedPreferences.edit().putString("hint" + (i + oriHintCnt), json.getString("hint" + i)).apply();
-                sharedPreferences.edit().putInt("hintCnt", oriHintCnt + hintCnt);
+                sharedPreferences.edit().putInt("hintCnt", oriHintCnt + hintCnt).apply();
 
                 for(int i=0;i<keyCnt;i++){
                     JSONObject subJson = json.getJSONObject("key" + i);
@@ -212,11 +221,12 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         lm.requestLocationUpdates( LocationManager.GPS_PROVIDER , 500 , 1 , FragmentGoogleMap.this );
         lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER , 1000 , 1 , FragmentGoogleMap.this );
 
+
+
         if ( lastKnowLocation != null ){
-            final String setMarker = "javascript:centerAt(" +
-                    lastKnowLocation.getLatitude() + "," +
-                    lastKnowLocation.getLongitude() + ")";
-            webView.loadUrl(setMarker);
+
+
+            resetPosition = true;
         }
 
 
