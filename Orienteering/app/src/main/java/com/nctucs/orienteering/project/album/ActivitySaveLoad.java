@@ -31,15 +31,16 @@ public class ActivitySaveLoad extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch ( v.getId() ){
             case R.id.btn_new_game:
-                Intent intent = new Intent( ActivitySaveLoad.this , ActivityMain.class );
-                intent.putExtra( "isNewGame" , true );
-                startActivity( intent );
+                Intent intent = new Intent(ActivitySaveLoad.this , ActivityChooseGame.class);
+                startActivity(intent);
+                ActivitySaveLoad.this.finish();
             break;
 
             case R.id.btn_continue:
                 Intent intent2 = new Intent( ActivitySaveLoad.this , ActivityMain.class );
                 intent2.putExtra( "isNewGame" , false );
-                startActivity( intent2 );
+                startActivity(intent2);
+                ActivitySaveLoad.this.finish();
             break;
 
         }

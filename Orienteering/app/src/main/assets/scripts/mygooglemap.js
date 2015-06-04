@@ -1,6 +1,6 @@
-
 var imgAndroid = "images/android.png";
-
+var markers = new Array(10);
+var msgs = new Array( 10 );
 function initialize() {
     var mapOptions = {
       center: new google.maps.LatLng(-34.397, 150.644),
@@ -21,7 +21,59 @@ function initialize() {
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
+    initMarkers();
+    initMessages();
 }
+
+function initMessages(){
+
+    for ( var i = 0 ; i < 10 ; i++ )
+        msgs[i] = new google.maps.Marker({
+                             clickable: true,
+                             shadow: null,
+                             zIndex: 999,
+                             map:map // your google.maps.Map object
+                         });
+
+    console.log( "123" );
+}
+
+function initMarkers(){
+
+    for ( var i = 0 ; i < 10 ; i++ ){
+        markers[i] = new google.maps.Marker({
+                             clickable: false,
+                             icon: "images/android"+i+".png",
+                             shadow: null,
+                             zIndex: 999,
+                             map:map // your google.maps.Map object
+                          });
+    }
+
+}
+
+function setPlayerMarker( which , latitude , longitude ){
+    var myLatlng = new google.maps.LatLng(latitude,longitude);
+    markers[which].setPosition( myLatlng );
+
+}
+
+
+function setMessageMarker( which , latitude , longitude , msg ){
+
+    var myLatlng = new google.maps.LatLng(latitude,longitude);
+    msgs[ which ].setPosition( myLatlng );
+
+     var infoWindow = new google.maps.InfoWindow({
+                    content: msg
+                });
+     google.maps.event.addListener( msgs[which] , 'click', function () {
+               infoWindow.open(map, msgs[which]);
+     });
+
+
+}
+
 
 function moveMarkerTo( latitude , longitude ){
     myLatlng = new google.maps.LatLng(latitude,longitude);

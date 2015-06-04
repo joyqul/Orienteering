@@ -1,6 +1,10 @@
 # Server test files
 Server/hints
 Server/init_hints
+Server/games
+Server/keys
+Server/log
+Server/*.pyc
 
 # Numerous always-ignore extensions
 *.diff
@@ -34,5 +38,5 @@ nbproject
 build/
 .idea/
 .gradle/
-Orienteering/local.properties
+local.properties
 

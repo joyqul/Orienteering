@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:layout_centerVertical="true"
 
-    android:background="#ff33a2ff"
+    android:background="@drawable/background2"
     android:weightSum="1">
 
 
@@ -25,6 +25,7 @@
         android:layout_width="222dp"
         android:layout_height="wrap_content"
         android:height="40dp"
+        android:singleLine="true"
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"

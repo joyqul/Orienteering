@@ -1,0 +1,61 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_centerHorizontal="true"
+
+    android:background="#ff33a2ff"
+    android:weightSum="2">
+
+
+    <ImageView
+        android:id="@+id/img_my_hint"
+        android:layout_width="match_parent"
+        android:layout_height="131dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:maxHeight="100dp"
+        android:maxWidth="100dp"
+        android:src="@drawable/m1"
+        android:layout_marginTop="10px"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="224dp"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:layout_width="230dp"
+            android:layout_height="161dp"
+            android:id="@+id/editText"
+            android:layout_gravity="center"
+            android:text="Leave your message here"
+            android:background="#ffffffff"
+            android:editable="true"
+            android:inputType="text"
+            android:textStyle="normal" />
+    </FrameLayout>
+
+    <Button
+        android:layout_width="87dp"
+        android:layout_height="wrap_content"
+        android:text="SEND"
+        android:id="@+id/send_button"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:textColor="#ff2641ff"
+        android:singleLine="false" />
+
+    <Button
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:id="@+id/back_button"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:textColor="#ff2641ff" />
+
+</LinearLayout>

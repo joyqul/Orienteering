@@ -37,6 +37,7 @@ public class ActivityChooseMode extends Activity implements View.OnClickListener
             case R.id.btn_player:
 
                 startActivity( new Intent( ActivityChooseMode.this , ActivityLogin.class ) );
+
             break;
         }
     }
