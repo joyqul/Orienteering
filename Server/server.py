@@ -229,9 +229,29 @@ class Server:
             response["success"] = "true"
             response = json.dumps(response)
             return response
-        else:
-            print >>sys.stderr, 'none of above'
-            
+
+        #############################
+        ### User finish this game ###
+        #############################
+        if json_type == 5:
+            self.client[my_token].write_rank()
+            rank_list = self.client[my_token].get_rank()
+            response = {}
+
+            rank_id = 0
+            for r in rank_list:
+                data = {}
+                rank = "rank"+str(rank_id)
+                data["time"] = r[0]
+                data["name"] = r[1]
+                response[rank] = data
+                rank_id = rank_id + 1
+
+            response["rankCnt"] = rank_id
+            response = json.dumps(response)
+            return response
+
+        print >>sys.stderr, 'none of above'
         return "test"
         
     def set_client_name(self, name, my_token):
@@ -346,4 +366,5 @@ class Server:
                 game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key, key_file = line.split(',')
                 key_file = key_file.split('\n')[0]
                 self.games.append(Game(game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key, key_file))
+        f.close()
 

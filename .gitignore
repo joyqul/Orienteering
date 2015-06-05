@@ -1,9 +1,5 @@
 # Server test files
-Server/hints
-Server/init_hints
-Server/games
-Server/keys
-Server/log
+Server/files/log
 Server/*.pyc
 
 # Numerous always-ignore extensions
