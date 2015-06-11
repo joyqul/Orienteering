@@ -321,7 +321,6 @@ class Server:
                         if s in outputs:
                             outputs.remove(s)
                         inputs.remove(s)
-                        del self.client[s]
                         print 'remove client: ', self.client
                         s.close()
 
