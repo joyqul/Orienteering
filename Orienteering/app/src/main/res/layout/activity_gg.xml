@@ -1,18 +1,17 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:layout_centerHorizontal="true"
 
-    android:background="#ff33a2ff"
+    android:background="@drawable/background2"
     android:weightSum="1">
 
-
     <ImageView
-        android:id="@+id/img_logo"
-        android:layout_width="317dp"
-        android:layout_height="250dp"
+        android:id="@+id/img_prize"
+        android:layout_width="307dp"
+        android:layout_height="143dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
@@ -22,8 +21,57 @@
         android:layout_marginTop="100px"
         android:layout_centerHorizontal="true"
         />
+    <TextView
+        android:id="@+id/congratulate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="18dp"
+        android:text="You win the game!"
+        android:textSize = "24sp"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <View
+        android:layout_width="250dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:background="#fff" />
+    <TextView
+        android:id="@+id/text_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text=" R a n k i n g"
+        android:textSize = "24sp"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <View
+        android:layout_width="250dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"
+        android:layout_marginBottom="5dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_gravity="right" />
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rank"
+        android:layout_gravity="center_horizontal"
+    />
     <Button
-        android:id="@+id/button_submit"
+        android:id="@+id/btn_new_game"
         android:text=" NEW GAME "
         android:width="200dp"
         android:layout_marginTop="20sp"
