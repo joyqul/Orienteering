@@ -106,7 +106,5 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
 
         }
 
-
-
     }
 }
