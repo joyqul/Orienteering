@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import com.nctucs.orienteering.project.R;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;

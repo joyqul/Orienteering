@@ -140,7 +140,7 @@ public class ActivityMain extends FragmentActivity {
         tabHost.addTab(tabHost.newTabSpec("遊戲畫面").setIndicator("遊戲畫面"), FragmentGoogleMap.class , null);
         tabHost.addTab(tabHost.newTabSpec("提示").setIndicator("提示") , FragmentMyHint.class , null );
         tabHost.addTab(tabHost.newTabSpec("留言").setIndicator("留言") , FragmentLeaveMessage.class , null );
-        tabHost.addTab(tabHost.newTabSpec("鑰匙").setIndicator("鑰匙") , FragmentMyHint.class , null);
+        tabHost.addTab(tabHost.newTabSpec("鑰匙").setIndicator("鑰匙") , FragmentMyKey.class , null);
     }
 
 }

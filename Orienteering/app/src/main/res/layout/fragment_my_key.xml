@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2"
+    android:weightSum="1">
+    <TextView
+        android:id="@+id/text_describe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="18dp"
+        android:text="Now You get the key:"
+        android:textSize = "24sp"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TextView
+        android:id="@+id/text_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="18dp"
+        android:text="_ _ _ _ _ _ _ _"
+        android:textSize = "35sp"
+        android:textColor="@android:color/white"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <Button
+        android:id="@+id/button_vuforia"
+        android:text=" VUFORIA "
+        android:width="200dp"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff2641ff"
+        android:background="@drawable/shape"
+        android:onClick="submit"
+        />
+    <Button
+        android:id="@+id/button_check_ans"
+        android:text=" FINAL KEY "
+        android:width="200dp"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff2641ff"
+        android:background="@drawable/shape"
+        android:onClick="submit"
+        />
+</LinearLayout>

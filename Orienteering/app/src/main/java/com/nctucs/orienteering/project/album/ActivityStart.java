@@ -7,8 +7,10 @@ package com.nctucs.orienteering.project.album;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,10 +49,15 @@ public class ActivityStart extends Activity {
     }
 
 
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
+
+
+
             if ( msg.what == 1 ){
                 Log.e("new token", token);
                 userData.edit().putString("token", token).apply();
@@ -101,6 +108,7 @@ public class ActivityStart extends Activity {
                     loadingBar.setProgress( i );
 
                 }
+
                 if(isNewGame){
                     Intent intent = new Intent(ActivityStart.this, ActivityChooseGame.class);
                     startActivity(intent);

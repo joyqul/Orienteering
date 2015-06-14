@@ -40,6 +40,8 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     boolean loadFinish = false;
     boolean updateLocation = false;
     boolean resetPosition = false;
+    boolean restartThread = false;
+    boolean resetBox = true;
     private SharedPreferences sharedPreferences;
     @Override
     public void onProviderEnabled(String provider) {
@@ -180,7 +182,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         public void run() {
             try {
                 tcpSocket socket = new tcpSocket();
-
+                restartThread = false;
                 while ( updateLocation ) {
 
                     if ( lastKnowLocation == null ) continue;
@@ -204,6 +206,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
 
                     Thread.sleep( 5000 );
                 }
+                restartThread = true;
             }
             catch ( Exception e ){
                 e.printStackTrace();
@@ -231,7 +234,8 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
 
 
         updateLocation = true;
-        new UpdateLocationsThread().start();
+        if ( restartThread )
+            new UpdateLocationsThread().start();
 
     }
 
