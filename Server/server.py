@@ -39,7 +39,7 @@ class Server:
 
     def near(self, latitude, longitude, hint):
 #print type(latitude), type(longitude), type(hint.latitude)
-        if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.0001:
+        if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.001:
             return True
         return False
 
@@ -71,6 +71,7 @@ class Server:
             response = {}
             response["token"] = mykey
             response = json.dumps(response)
+            print >>sys.stderr, "[[[[[[get]]]]]"+mykey
             return response
 
         ##############################################
@@ -160,7 +161,7 @@ class Server:
 
                 player_id = 0
                 for s in self.client:
-                    if self.client[s].game_id != self.client[my_token]:
+                    if s == my_token or self.client[s].game_id != self.client[my_token].game_id:
                         continue
                     player = "player"+str(player_id)
                     player_id = player_id + 1
@@ -242,8 +243,8 @@ class Server:
             for r in rank_list:
                 data = {}
                 rank = "rank"+str(rank_id)
-                data["time"] = r[0]
-                data["name"] = r[1]
+                data["time"] = r[1]
+                data["name"] = r[0]
                 response[rank] = data
                 rank_id = rank_id + 1
 
