@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,7 +101,12 @@ public class ActivityGG extends Activity implements View.OnClickListener{
                 gridView = (GridView)findViewById(R.id.rank);
                 gridView.setNumColumns(1);
                 String[] gameList = new String[gameCnt];
-                for(int i=0;i<gameCnt;i++) gameList[i] = json.getString("rank"+i);
+                for(int i=0;i<gameCnt;i++){
+                    JSONObject temp = new JSONObject(json.getString("rank"+i));
+                    Log.e("rank", json.getString("rank"+i));
+                    gameList[i] = new String();
+                    gameList[i] = gameList[i].concat(temp.getString("name")+"\n").concat(temp.getString("time"));
+                }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(ActivityGG.this,
                         android.R.layout.simple_list_item_1, gameList);
                 gridView.setAdapter(adapter);

@@ -64,12 +64,7 @@
         android:id="@+id/imageView3"
         android:layout_gravity="right" />
 
-    <GridView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rank"
-        android:layout_gravity="center_horizontal"
-    />
+
     <Button
         android:id="@+id/btn_new_game"
         android:text=" NEW GAME "
@@ -81,4 +76,11 @@
         android:textColor="#ff3771ff"
         android:background="@drawable/shape"
         />
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rank"
+        android:layout_gravity="center_horizontal"
+    />
 </LinearLayout>

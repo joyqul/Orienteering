@@ -39,7 +39,7 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
-        gameId = sharedPreferences.getInt("gameId", 0);
+        gameId = getIntent().getIntExtra("gameId" , 0);
         token = sharedPreferences.getString("token", null);
         submit = (Button)findViewById(R.id.button_submit);
         submit.setOnClickListener(this);

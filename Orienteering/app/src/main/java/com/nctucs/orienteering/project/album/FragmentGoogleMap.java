@@ -183,28 +183,31 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
             try {
                 tcpSocket socket = new tcpSocket();
                 restartThread = false;
+                int cnt = 0;
                 while ( updateLocation ) {
 
                     if ( lastKnowLocation == null ) continue;
+                    if ( cnt == 0 ) {
+                        JSONType jsonType = new JSONType(2);
 
-                    JSONType jsonType = new JSONType(2);
+                        jsonType.put("lat", lastKnowLocation.getLatitude());
+                        jsonType.put("long", lastKnowLocation.getLongitude());
+                        jsonType.put("token", sharedPreferences.getString("token", null));
 
-                    jsonType.put("lat", lastKnowLocation.getLatitude());
-                    jsonType.put("long", lastKnowLocation.getLongitude());
-                    jsonType.put("token", sharedPreferences.getString("token", null));
-
-                    socket.send(jsonType);
-
-
-                    JSONObject json = socket.recieve();
-                    Message msg = new Message();
-                    Bundle bundle = new Bundle();
-                    bundle.putString( "json" , json.toString() );
-                    msg.setData( bundle );
-                    handler.sendMessage( msg );
+                        socket.send(jsonType);
 
 
-                    Thread.sleep( 5000 );
+                        JSONObject json = socket.recieve();
+                        Message msg = new Message();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("json", json.toString());
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);
+
+                    }
+                    cnt++;
+                    if ( cnt == 49 ) cnt = 0;
+                    Thread.sleep( 100 );
                 }
                 restartThread = true;
             }
@@ -222,7 +225,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         sharedPreferences = getActivity().getSharedPreferences("userData" , Context.MODE_PRIVATE);
         LocationManager lm = (LocationManager)getActivity().getSystemService( Context.LOCATION_SERVICE );
         lm.requestLocationUpdates( LocationManager.GPS_PROVIDER , 500 , 1 , FragmentGoogleMap.this );
-        lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER , 1000 , 1 , FragmentGoogleMap.this );
+        lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER , 1000000 , 1 , FragmentGoogleMap.this );
 
 
 
@@ -234,8 +237,8 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
 
 
         updateLocation = true;
-        if ( restartThread )
-            new UpdateLocationsThread().start();
+
+        new UpdateLocationsThread().start();
 
     }
 
