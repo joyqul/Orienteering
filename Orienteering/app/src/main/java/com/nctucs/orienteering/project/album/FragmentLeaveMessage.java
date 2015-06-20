@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.R;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -83,12 +85,15 @@ public class FragmentLeaveMessage extends android.support.v4.app.Fragment implem
         public void run() {
             super.run();
             try {
-                tcpSocket socket = new tcpSocket();
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
                 JSONType json = new JSONType(3);
                 json.put("token", token);
                 json.put("msg", toSend);
-                socket.send(json);
-                JSONObject result = socket.recieve();
+                connection.send(json);
+                //socket.send(json);
+                JSONObject result = connection.recieve();
+                //JSONObject result = socket.recieve();
                 if ( result.getBoolean( "success" ) == true ){
                     Message msg = new Message();
                     msg.what = 1;

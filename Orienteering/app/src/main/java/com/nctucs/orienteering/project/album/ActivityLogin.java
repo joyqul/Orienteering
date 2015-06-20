@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.Param.ServerInfo;
 import com.nctucs.orienteering.project.R;
@@ -61,13 +62,16 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
                 json.put("token", token);
                 json.put("playerName", ID);
                 json.put("gameId", gameId);
-                tcpSocket socket = new tcpSocket();
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
                 Log.e("json", json.toString());
-                socket.send( json );
-                JSONObject result = socket.recieve();
+                connection.send(json);
+                //socket.send( json );
+                JSONObject result = connection.recieve();
+                //JSONObject result = socket.recieve();
 
                 if (result.getBoolean( "success" ) == true){
-                    socket.close();
+                    //socket.close();
                     sharedPreferences.edit().putString("userName", ID).apply();
                     sharedPreferences.edit().putString("answer", result.getString("answer")).apply();
                     sharedPreferences.edit().putFloat("goalLat", ((float)result.getDouble("goalLat"))).apply();
@@ -78,15 +82,11 @@ public class ActivityLogin extends Activity implements View.OnClickListener {
                     startActivity(intent);
                     ActivityLogin.this.finish();
                 }else{
-//                    Toast.makeText( ActivityLogin.this , "LogIn Failed!" , Toast.LENGTH_SHORT );
-                    socket.close();
+                    //socket.close();
                 }
-
-
             }
             catch ( Exception e ){
                 e.printStackTrace();
-//                Toast.makeText( ActivityLogin.this , "Login Failed" , Toast.LENGTH_SHORT ).show();
             }
         }
     }

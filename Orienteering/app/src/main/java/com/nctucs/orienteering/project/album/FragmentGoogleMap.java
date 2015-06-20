@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
 import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
@@ -41,7 +42,6 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     boolean updateLocation = false;
     boolean resetPosition = false;
     boolean restartThread = false;
-    boolean resetBox = true;
     private SharedPreferences sharedPreferences;
     @Override
     public void onProviderEnabled(String provider) {
@@ -181,7 +181,8 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         @Override
         public void run() {
             try {
-                tcpSocket socket = new tcpSocket();
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
                 restartThread = false;
                 int cnt = 0;
                 while ( updateLocation ) {
@@ -193,11 +194,10 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
                         jsonType.put("lat", lastKnowLocation.getLatitude());
                         jsonType.put("long", lastKnowLocation.getLongitude());
                         jsonType.put("token", sharedPreferences.getString("token", null));
-
-                        socket.send(jsonType);
-
-
-                        JSONObject json = socket.recieve();
+                        connection.send(jsonType);
+                        //socket.send(jsonType);
+                        JSONObject json = connection.recieve();
+                        //JSONObject json = socket.recieve();
                         Message msg = new Message();
                         Bundle bundle = new Bundle();
                         bundle.putString("json", json.toString());

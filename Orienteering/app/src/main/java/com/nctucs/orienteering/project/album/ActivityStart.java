@@ -18,6 +18,7 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
 import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
@@ -72,10 +73,12 @@ public class ActivityStart extends Activity {
         @Override
         public void run () {
             try {
-                tcpSocket socket = new tcpSocket();
-                socket.send(new JSONType(-1));
-
-                JSONObject result = socket.recieve();
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
+                connection.send(new JSONType(-1));
+                //socket.send(new JSONType(-1));
+                JSONObject result = connection.recieve();
+                //JSONObject result = socket.recieve();
                 token = result.getString("token");
                 Message msg = new Message();
                 msg.what = 1;

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
 import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
@@ -73,11 +74,14 @@ public class ActivityGG extends Activity implements View.OnClickListener{
         @Override
         public void run () {
             try {
-                tcpSocket socket = new tcpSocket();
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
                 JSONObject json = new JSONType(5);
                 json.put("token", token);
-                socket.send(json);
-                JSONObject result = socket.recieve();
+                connection.send(json);
+                //socket.send(json);
+                JSONObject result = connection.recieve();
+                //JSONObject result = socket.recieve();
                 Message msg = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putString("json", result.toString());
