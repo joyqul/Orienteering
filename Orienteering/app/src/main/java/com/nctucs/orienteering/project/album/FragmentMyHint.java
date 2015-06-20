@@ -56,6 +56,7 @@ public class FragmentMyHint extends android.support.v4.app.Fragment {
             Map<String,Object> map = new HashMap<String, Object>();
             map.put( "text", sharedPreferences.getString("hint"+i , "NULL") );
             map.put( "image" , R.drawable.idea);
+
             items.add( map );
         }
         adapter.notifyDataSetChanged();

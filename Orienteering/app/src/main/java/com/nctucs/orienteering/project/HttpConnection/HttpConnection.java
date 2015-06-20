@@ -1,4 +1,5 @@
-package com.nctucs.orienteering.project.tcpSocket;
+package com.nctucs.orienteering.project.HttpConnection;
+
 import android.util.Log;
 
 import com.nctucs.orienteering.project.Param.ServerInfo;
@@ -9,18 +10,25 @@ import org.json.JSONObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-public class tcpSocket extends Socket {
+/**
+ * Created by Yu ShangHsin on 2015/6/20.
+ */
+
+public class HttpConnection{
 
     DataInputStream is;
     DataOutputStream os;
+    HttpURLConnection connection;
 
-    public tcpSocket() throws IOException {
-        super( ServerInfo.SERVER_IP  , ServerInfo.PORT );
-
-        is = new DataInputStream(this.getInputStream());
-        os = new DataOutputStream(this.getOutputStream());
+    public HttpConnection() throws IOException{
+        connection = (HttpURLConnection) new URL(ServerInfo.URL).openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        is = new DataInputStream(connection.getInputStream());
+        os = new DataOutputStream(connection.getOutputStream());
     }
 
     public void send(JSONObject obj) {

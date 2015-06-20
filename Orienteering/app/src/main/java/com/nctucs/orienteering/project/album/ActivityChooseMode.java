@@ -35,9 +35,8 @@ public class ActivityChooseMode extends Activity implements View.OnClickListener
                 Toast.makeText( ActivityChooseMode.this , "You should buy the pro version to activate this!" , Toast.LENGTH_SHORT ).show();
             break;
             case R.id.btn_player:
-
                 startActivity( new Intent( ActivityChooseMode.this , ActivityLogin.class ) );
-
+                ActivityChooseMode.this.finish();
             break;
         }
     }

@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
 import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
@@ -40,6 +41,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
     boolean loadFinish = false;
     boolean updateLocation = false;
     boolean resetPosition = false;
+    boolean restartThread = false;
     private SharedPreferences sharedPreferences;
     @Override
     public void onProviderEnabled(String provider) {
@@ -179,31 +181,35 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         @Override
         public void run() {
             try {
-                tcpSocket socket = new tcpSocket();
-
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
+                restartThread = false;
+                int cnt = 0;
                 while ( updateLocation ) {
 
                     if ( lastKnowLocation == null ) continue;
+                    if ( cnt == 0 ) {
+                        JSONType jsonType = new JSONType(2);
 
-                    JSONType jsonType = new JSONType(2);
+                        jsonType.put("lat", lastKnowLocation.getLatitude());
+                        jsonType.put("long", lastKnowLocation.getLongitude());
+                        jsonType.put("token", sharedPreferences.getString("token", null));
+                        connection.send(jsonType);
+                        //socket.send(jsonType);
+                        JSONObject json = connection.recieve();
+                        //JSONObject json = socket.recieve();
+                        Message msg = new Message();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("json", json.toString());
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);
 
-                    jsonType.put("lat", lastKnowLocation.getLatitude());
-                    jsonType.put("long", lastKnowLocation.getLongitude());
-                    jsonType.put("token", sharedPreferences.getString("token", null));
-
-                    socket.send(jsonType);
-
-
-                    JSONObject json = socket.recieve();
-                    Message msg = new Message();
-                    Bundle bundle = new Bundle();
-                    bundle.putString( "json" , json.toString() );
-                    msg.setData( bundle );
-                    handler.sendMessage( msg );
-
-
-                    Thread.sleep( 5000 );
+                    }
+                    cnt++;
+                    if ( cnt == 49 ) cnt = 0;
+                    Thread.sleep( 100 );
                 }
+                restartThread = true;
             }
             catch ( Exception e ){
                 e.printStackTrace();
@@ -219,7 +225,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
         sharedPreferences = getActivity().getSharedPreferences("userData" , Context.MODE_PRIVATE);
         LocationManager lm = (LocationManager)getActivity().getSystemService( Context.LOCATION_SERVICE );
         lm.requestLocationUpdates( LocationManager.GPS_PROVIDER , 500 , 1 , FragmentGoogleMap.this );
-        lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER , 1000 , 1 , FragmentGoogleMap.this );
+        lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER , 1000000 , 1 , FragmentGoogleMap.this );
 
 
 
@@ -231,6 +237,7 @@ public class FragmentGoogleMap extends android.support.v4.app.Fragment implement
 
 
         updateLocation = true;
+
         new UpdateLocationsThread().start();
 
     }

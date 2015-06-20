@@ -7,8 +7,10 @@ package com.nctucs.orienteering.project.album;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.nctucs.orienteering.project.HttpConnection.HttpConnection;
 import com.nctucs.orienteering.project.JSONMsg.JSONType;
 import com.nctucs.orienteering.project.R;
 import com.nctucs.orienteering.project.tcpSocket.tcpSocket;
@@ -47,10 +50,15 @@ public class ActivityStart extends Activity {
     }
 
 
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
+
+
+
             if ( msg.what == 1 ){
                 Log.e("new token", token);
                 userData.edit().putString("token", token).apply();
@@ -65,10 +73,12 @@ public class ActivityStart extends Activity {
         @Override
         public void run () {
             try {
-                tcpSocket socket = new tcpSocket();
-                socket.send(new JSONType(-1));
-
-                JSONObject result = socket.recieve();
+                HttpConnection connection = new HttpConnection();
+                //tcpSocket socket = new tcpSocket();
+                connection.send(new JSONType(-1));
+                //socket.send(new JSONType(-1));
+                JSONObject result = connection.recieve();
+                //JSONObject result = socket.recieve();
                 token = result.getString("token");
                 Message msg = new Message();
                 msg.what = 1;
@@ -101,6 +111,7 @@ public class ActivityStart extends Activity {
                     loadingBar.setProgress( i );
 
                 }
+
                 if(isNewGame){
                     Intent intent = new Intent(ActivityStart.this, ActivityChooseGame.class);
                     startActivity(intent);
