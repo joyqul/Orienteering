@@ -9,6 +9,8 @@ import Queue
 import random
 import md5
 from socket import error as SocketError
+from BaseHTTPServer import BaseHTTPRequestHandler
+import cgi
 
 # Module write by myself
 from message import *

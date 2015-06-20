@@ -2,11 +2,10 @@ from settings import *
 PACKET_SIZE = 1024
 
 class Server:
-    def __init__(self, ip='127.0.0.1', port=10001):
-#port = 1024+random.randint(1, 1000)
-        self.address = (ip, port)
-        self.client = {}
+    def __init__(self):
         self.games = []
+        self.client = {}
+        self.set_game("files/games")
 
     def handle_host(self, data):
         blocks = data.split(',')
@@ -39,11 +38,11 @@ class Server:
 
     def near(self, latitude, longitude, hint):
 #print type(latitude), type(longitude), type(hint.latitude)
-        if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.001:
+        if ((latitude-hint.latitude)**2+(longitude-hint.longitude)**2)**0.5 < 0.005:
             return True
         return False
 
-    def handle_json(self, data, my_token):
+    def handle_json(self, data):
         try:
             json_data = json.loads(data)
         except ValueError, e:
@@ -262,96 +261,6 @@ class Server:
         self.client[my_token].set_name(name)
         return True
 
-    def listen(self):
-        # Create a TCP/IP socket
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.setblocking(0)
-        
-        # Bind the socket to the port
-        print >>sys.stderr, 'starting up on %s port %s' % self.address
-        self.sock.bind(self.address)
-        
-        # Listen for incoming connections
-        self.sock.listen(5)
-
-        # Sockets from which we expect to read
-        inputs = [self.sock]
-        # Sockets to which we expect to write
-        outputs = [self.sock]
-        # Outgoing message queues (socket:Queue)
-        message_queues = {}
-        
-        while inputs:
-            # Wait for at least one of the sockets to be ready for processing
-            print >>sys.stderr, '\nwaiting for the next event'
-            readable, writable, exceptional = select.select(inputs, outputs, inputs)
-
-            # Handle inputs
-            for s in readable:
-                if s is self.sock:
-                    # A "readable" server socket is ready to accept a connection
-                    connection, client_address = s.accept()
-                    print >>sys.stderr, 'new connection from', client_address
-                    new_client = Client()
-                    self.client[connection] = new_client
-                    connection.setblocking(0)
-                    inputs.append(connection)
-    
-                    # Give the connection a queue for data we want to send
-                    message_queues[connection] = Queue.Queue()
-                else:
-                    try:
-                        data = s.recv(PACKET_SIZE)
-                    except SocketError, e:
-                        print >>sys.stderr, 'SocketError', e
-                        continue
-                    
-                    print "get: ", data
-                    if data:
-                        # A readable client socket has data
-                        print >>sys.stderr, 'received "%s" from %s' % (data, s.getpeername())
-                        response = self.handle_json(data, s) + "\n"
-                        message_queues[s].put(response)
-                        # Add output channel for response
-                        if s not in outputs:
-                            outputs.append(s)
-                    else:
-                        # Interpret empty result as closed connection
-                        print >>sys.stderr, 'closing', client_address, 'after reading no data'
-                        # Stop listening for input on the connection
-                        if s in outputs:
-                            outputs.remove(s)
-                        inputs.remove(s)
-                        print 'remove client: ', self.client
-                        s.close()
-
-                        # Remove message queue
-                        del message_queues[s]
-
-            # Handle outputs
-            for s in writable:
-                try:
-                    next_msg = message_queues[s].get_nowait()
-                except Queue.Empty:
-                    # No messages waiting so stop checking for writability.
-                    print >>sys.stderr, 'output queue for', s.getpeername(), 'is empty'
-                    outputs.remove(s)
-                else:
-                    print >>sys.stderr, 'sending "%s" to %s' % (next_msg, s.getpeername())
-                    s.send(next_msg)
-
-            # Handle "exceptional conditions"
-            for s in exceptional:
-                print >>sys.stderr, 'handling exceptional condition for', s.getpeername()
-                # Stop listening for input on the connection
-                inputs.remove(s)
-                if s in outputs:
-                    outputs.remove(s)
-                s.close()
-
-                # Remove message queue
-                del message_queues[s]
-
     def write_cnt_response(self, response, base_str, target_list):
         response[base_str+"Cnt"] = len(target_list)
         my_id = 0
@@ -368,3 +277,24 @@ class Server:
                 self.games.append(Game(game_name, init_hints_file, hints_file, answer, goal_lat, goal_long, total_key, key_file))
         f.close()
 
+class PostHandler(BaseHTTPRequestHandler):
+    global server
+    server = Server()
+
+    def do_POST(self):
+
+        # Parse the form data posted
+        length = int(self.headers.getheader('content-length'))
+        data = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
+        response = ""
+        for json in data:
+            response = server.handle_json(json)
+            break
+        print "[[[Send]]]", response
+        
+        # Begin the response
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(response)
+        self.wfile.close()
+        return

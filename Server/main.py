@@ -1,7 +1,8 @@
 from server import *
 
 if __name__ == '__main__':
-    server = Server("140.113.27.45", 7123)
-#server = Server()
-    server.set_game("files/games")
-    server.listen()
+    from BaseHTTPServer import HTTPServer
+#server = HTTPServer(('140.113.27.45', 7123), PostHandler)
+    server = HTTPServer(('localhost', 8000), PostHandler)
+    print 'Starting server, use <Ctrl-C> to stop'
+    server.serve_forever()
