@@ -284,12 +284,14 @@ class PostHandler(BaseHTTPRequestHandler):
     def do_POST(self):
 
         # Parse the form data posted
-        length = int(self.headers.getheader('content-length'))
-        data = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
+        length = int(self.headers.getheader('Content-Length'))
+        print self.headers
+        print "length", length
+        data = self.rfile.read(length)
+        #data = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
+        print "[[[Get]]]", data
         response = ""
-        for json in data:
-            response = server.handle_json(json)
-            break
+        response = server.handle_json(data)
         print "[[[Send]]]", response
         
         # Begin the response
