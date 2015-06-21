@@ -73,7 +73,9 @@ public class ActivityStart extends Activity {
         @Override
         public void run () {
             try {
+                Log.e("Start connecction", " '");
                 HttpConnection connection = new HttpConnection();
+                Log.e("Finish connection", " ");
                 //tcpSocket socket = new tcpSocket();
                 connection.send(new JSONType(-1));
                 //socket.send(new JSONType(-1));

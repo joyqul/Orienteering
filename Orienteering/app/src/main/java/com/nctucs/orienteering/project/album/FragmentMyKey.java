@@ -80,7 +80,7 @@ public class FragmentMyKey extends android.support.v4.app.Fragment{
                                new DialogInterface.OnClickListener() {
                                    @Override
                                    public void onClick(DialogInterface dialog, int which) {
-                                       if ( input.getText().toString().equals("treasure") ){
+                                       if ( input.getText().toString().equals("AR") ){
                                            Intent intent = new Intent( getActivity() , ActivityGG.class );
                                            startActivity( intent );
                                            getActivity().finish();
